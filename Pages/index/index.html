@@ -5,33 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="recherche de l'info sur des smarphones et compare ses specs.">
     <meta name="author" content="LEVRARD, LARRAZ MARTIN, MARTIN, JEANNE">
-    <title>phoneRQL</title>
+    <title>PhonarQL</title>
     <link rel="stylesheet" href="index.css"> <!-- Lien vers votre fichier CSS -->
     <link rel="icon" href="favicon.ico"> <!-- Favicon de votre site -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="index.js"> </script>
 </head>
 <body>
     <header>
-        <h1>Bienvenue sur mon site</h1>
-        <nav>
-            <ul>
-                <li><a href="#section1">Section 1</a></li>
-                <li><a href="#section2">Section 2</a></li>
-                <li><a href="#section3">Section 3</a></li>
-            </ul>
-        </nav>
+        <h1>Recherche de Smartphone PhonarQL</h1>
     </header>
     
-    <main>
-        <section id="section1">
-            <h2>Section 1</h2>
-            <p>Contenu de la section 1.</p>
-        </section>
-    </main>
+    <recherche class="searchArea">
+        <div class="searchField">
+            <input id="searchBar" type="search" name="searchBar" />
+            <button id="searchBtn" onclick="search()">🔍</button>
+        </div>
+    </recherche>
+
+    <results>
+        <ul id="res">
+        </ul>
+    </results>
     
+    <compare_board>
+        <table id="compare">
+            <tr id="mainRowCompare">
+            </tr>
+        </table> 
+    </compare_board>
     <footer>
         <p>&copy; 2024 MonSite. Tous droits réservés.</p>
     </footer>
     
-    <script src="index.js"> </script>
 </body>
 </html>

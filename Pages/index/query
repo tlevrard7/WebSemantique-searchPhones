@@ -1,0 +1,21 @@
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+SELECT ?t, GROUP_CONCAT(DISTINCT ?rel ; SEPARATOR = ", " ) as ?rels 
+WHERE {
+?t a dbo:Device; 
+   rdfs:label ?label;  
+   dbp:related  ?rel;
+   dbp:os ?os; 
+   dbp:type ?type; 
+   dbp:sound ?sound; 
+   dbp:predecessor ?pred; 
+   dbp:rearCamera ?rearCam; 
+   dbp:frontCamera ?frontCam; 
+   dbo:abstract ?abs; 
+   dbp:gpu ?gpu; 
+   dbp:cpu ?cpu .
+FILTER(regex(?type,  ".*PHONE.*", "i")) .
+FILTER(LANG(?label)="en") .
+FILTER(LANG(?abs)="en") .
+
+}LIMIT 20 

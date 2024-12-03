@@ -1,0 +1,44 @@
+h1{
+    text-align: center;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    gap: 10px; /* Optionnel : espace entre les colonnes */
+    align-items: center; /* Centrer verticalement le contenu si nécessaire */
+    margin: 20px;
+}
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    min-width: 300px;
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #007BFF;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 10px 15px;
+    border: 1px solid #dddddd;
+}
+
+#imageTel {
+    width: 100%; /* L'image prendra toute la largeur de sa colonne */
+    max-height: 100%;
+    object-fit: contain; /* Garde les proportions de l'image */
+}
+
+.styled-table {
+    margin: 0; /* Supprimez les marges pour un alignement parfait */
+}
+

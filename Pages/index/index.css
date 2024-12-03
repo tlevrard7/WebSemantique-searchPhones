@@ -1,0 +1,17 @@
+/* * {
+    border: 1px dotted magenta;
+} */
+
+header {
+    text-align: center;
+    background-color: grey;
+}
+
+.searchArea {
+    background-color: 'red';
+    text-align: center;
+}
+
+.compare, .res{
+    width: 50%;
+}

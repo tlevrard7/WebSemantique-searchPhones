@@ -5,33 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="recherche de l'info">
     <meta name="author" content="LEVRARD, LARRAZ MARTIN, MARTIN, JEANNE">
-    <title>phoneRQL</title>
-    <link rel="stylesheet" href="index.css"> <!-- Lien vers votre fichier CSS -->
+    <title>Detail Téléphone</title>
+    <link rel="stylesheet" href="detail.css"> <!-- Lien vers votre fichier CSS -->
     <link rel="icon" href="favicon.ico"> <!-- Favicon de votre site -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
 <body>
     <header>
-        <h1>Bienvenue sur mon site</h1>
-        <nav>
-            <ul>
-                <li><a href="#section1">Section 1</a></li>
-                <li><a href="#section2">Section 2</a></li>
-                <li><a href="#section3">Section 3</a></li>
-            </ul>
-        </nav>
+        <h1>Détail du téléphone </h1>
     </header>
     
-    <main>
-        <section id="section1">
-            <h2>Section 1</h2>
-            <p>Contenu de la section 1.</p>
-        </section>
+    <main class="grid-container">
+        <img id="imageTel" src="https://static.fnac-static.com/multimedia/Images/FR/MDMFR/MDM/3d/3b/32/20069181/1540-1/tsp20241121182958/Apple-iPhone-16-Pro-Max-6-9-5G-256-Go-Double-SIM-Titane-Sable.jpg" alt="Téléphone">
+        <table id="tab-prop" class="styled-table">
+            <thead>
+                <tr>
+                    <th>Propriété</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Prop1</td>
+                    <td>DescProp1</td>
+                </tr>
+                <tr>
+                    <td>Prop2</td>
+                    <td>DescProp2</td>
+                </tr>
+            </tbody>
+        </table>
     </main>
-    
-    <footer>
-        <p>&copy; 2024 MonSite. Tous droits réservés.</p>
-    </footer>
-    
-    <script src="index.js"> </script>
-</body>
+
+    </body>
 </html>
