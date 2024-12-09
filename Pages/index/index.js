@@ -10,6 +10,8 @@ $(document).ready(function() {
             searchBtn.click();
         }
     }); 
+
+    if(searchBar.value.length) searchBtn.click();
     
 });
 
@@ -56,7 +58,7 @@ function search(){
         // Display results
         if (results.length) {
           $("ul#res").html(results.map((r) => 
-              `<li> <a href="../detail/detail.html?label=${encodeURIComponent(r)}"> ${r} </a> </li>`
+              `<li> <a href="../detail/detail.html?id=${encodeURIComponent(r)}&type=tel"> ${r} </a> </li>`
           ));
         } 
         else 

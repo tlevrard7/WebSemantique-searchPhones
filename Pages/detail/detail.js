@@ -33,38 +33,48 @@ function getImageTelephone_WikiData(nomTel){
 }
 */
 
+function getQuery(id, type){
+    var query = ``
+    
+    switch(type){
+        case "tel":
+            const nomTel = `"${id}"@en`;
+            query = `
+                    PREFIX dbr: <http://dbpedia.org/resource/>
+                    PREFIX dbo: <http://dbpedia.org/ontology/>
+                    PREFIX dbp: <http://dbpedia.org/property/>
+                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                    SELECT ?label ?brand ?releaseDate ?cpu ?gpu ?image ?pred
+                    WHERE {
+                        ?tel a dbo:Device; 
+                            rdfs:label ?label;  
+                            dbp:type ?type.
+                        FILTER(?label = ${nomTel}) .
+                        FILTER (lang(?label) = "en") . 
+                        {
+                            FILTER (regex(?type, ".*PHONE.*", "i")) 
+                        }
+                        UNION
+                        {
+                            FILTER (regex(?type, ".*PHABLET.*", "i")) 
+                        }
+                        OPTIONAL { ?tel dbo:releaseDate ?releaseDate. }
+                        OPTIONAL { ?tel dbp:brand ?brand. }
+                        OPTIONAL { ?tel dbp:cpu ?cpu. }
+                        OPTIONAL { ?tel dbp:gpu ?gpu. }
+                        OPTIONAL { ?tel foaf:depiction ?image. }
+                        OPTIONAL { ?tel dbp:predecessor ?pred. }
+                    }
+                `;
+    }
+    return query;
+}
 
-function getDetailsTelephone(nomTel){
 
-    const query = 
-    `
-        PREFIX dbr: <http://dbpedia.org/resource/>
-        PREFIX dbo: <http://dbpedia.org/ontology/>
-        PREFIX dbp: <http://dbpedia.org/property/>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        SELECT ?label ?brand ?releaseDate ?cpu ?gpu ?image ?pred
-        WHERE {
-            ?tel a dbo:Device; 
-                rdfs:label ?label;  
-                dbp:type ?type.
-            FILTER(?label = ${nomTel}) .
-            FILTER (lang(?label) = "en") . 
-            {
-                FILTER (regex(?type, ".*PHONE.*", "i")) 
-            }
-            UNION
-            {
-                FILTER (regex(?type, ".*PHABLET.*", "i")) 
-            }
-            OPTIONAL { ?tel dbo:releaseDate ?releaseDate. }
-            OPTIONAL { ?tel dbp:brand ?brand. }
-            OPTIONAL { ?tel dbp:cpu ?cpu. }
-            OPTIONAL { ?tel dbp:gpu ?gpu. }
-            OPTIONAL { ?tel foaf:depiction ?image. }
-            OPTIONAL { ?tel dbp:predecessor ?pred. }
-        }
-    `;
-
+function getDetails(id, type){
+    
+    const query = getQuery(id, type);
+    
     const url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
     $.ajax({
         url: url,
@@ -79,9 +89,11 @@ function getDetailsTelephone(nomTel){
                 var value = item[key].value;
                 if (key!="image"){
                     
-                    const lastSlashIndex = value.lastIndexOf("/");
-                    if(lastSlashIndex!=-1) {
+                    const include = value.includes("http://dbpedia.org/");
+                    console.log(value, include);
+                    if(include) {
                         // Si c'est une URI on récupère que le texte après le dernier '/'
+                        const lastSlashIndex = value.lastIndexOf("/");
                         value = value.substring(lastSlashIndex + 1);
                     }
 
@@ -107,12 +119,11 @@ function getDetailsTelephone(nomTel){
 $(document).ready(function () {
     
     const urlParams = new URLSearchParams(window.location.search);
-    const label = urlParams.get("label");
+    const id = urlParams.get("id");
+    const type = urlParams.get("type");
 
-    nomTel = `"${label}"@en`;
-
-    $('#page-title').html(`Détails du ${label}`);
+    $('#page-title').html(`Détails du ${id}`);
     
-    getDetailsTelephone(nomTel);
+    getDetails(id, type);
 
 });
