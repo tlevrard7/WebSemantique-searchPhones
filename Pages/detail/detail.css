@@ -1,22 +1,28 @@
+header {
+    text-align: center;
+    background-color: grey;
+}
+
 h1{
     text-align: center;
+    font-size : 50px;
 }
 
 .grid-container {
     display: grid;
-    grid-template-columns: 30% 70%;
-    gap: 10px; /* Optionnel : espace entre les colonnes */
-    align-items: center; /* Centrer verticalement le contenu si nécessaire */
+    grid-template-columns: 6fr 1fr 10fr;
+    gap: 10px;
+    align-items: center; 
     margin: 20px;
 }
 
 .styled-table {
+    grid-column: 3 / 4;  
     border-collapse: collapse;
     margin: 25px 0;
     font-size: 16px;
-    font-family: Arial, sans-serif;
     min-width: 300px;
-    width: 100%;
+    width: 80%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
@@ -28,17 +34,18 @@ h1{
 
 .styled-table th,
 .styled-table td {
+    grid-row: 1 / 2; 
     padding: 10px 15px;
     border: 1px solid #dddddd;
 }
 
 #imageTel {
-    width: 100%; /* L'image prendra toute la largeur de sa colonne */
-    max-height: 100%;
-    object-fit: contain; /* Garde les proportions de l'image */
+    grid-column: 1 / 2;  
+    grid-row: 1 / 2; 
+    height: 540px;
+    width: 270px;
+    object-fit: contain; 
 }
 
-.styled-table {
-    margin: 0; /* Supprimez les marges pour un alignement parfait */
-}
+
 

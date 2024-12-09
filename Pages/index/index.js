@@ -1,5 +1,3 @@
-
-
 $(document).ready(function() {
     console.log("done");
     var searchBar = document.getElementById("searchBar"); 
@@ -53,9 +51,16 @@ function search(){
         const bindings = data.results.bindings;
         const results = bindings.map(binding => binding.label.value);
 
+        console.log(results)
+
         // Display results
-        if(results.length) $("ul#res").html(results.map((r) => `<li>${r}</li>`).join(""));
-        else $("ul#res").html();
+        if (results.length) {
+          $("ul#res").html(results.map((r) => 
+              `<li> <a href="../detail/detail.html?label=${encodeURIComponent(r)}"> ${r} </a> </li>`
+          ).join(""));
+        } else {
+          $("ul#res").html("");
+      }
       })
       .fail(error => {
         alert("La requête s'est terminée en échec. Infos : " + JSON.stringify(error));

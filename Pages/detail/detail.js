@@ -1,48 +1,116 @@
-nomTel="Iphone_14"
+/*
+function getImageTelephone_WikiData(nomTel){
 
-
-$(document).ready( function () {
-
-        const query = `
-        PREFIX dbr: <http://dbpedia.org/resource/>
-        PREFIX dbo: <http://dbpedia.org/ontology/>
-        SELECT ?tel, ?label, ?abstract  WHERE {
-            ?tel a dbo:Device; 
-                rdfs:label ?label;  
-                dbp:type ?type ;
-                dbo:abstract ?abstract . 
-            FILTER (lang(?abstract) = "en") .
-            FILTER(LANG(?label)="en") .
-            FILTER (regex(?type,  ".*PHONE.*", "i")) .
-            FILTER(regex(?label, ".*${searchTxt}.*", "i")) .
-
+    const query = 
+    `
+        SELECT ?phone ?image 
+        WHERE {
+            ?phone wdt:P306 ?os. # Permet de filtrer avant de rechercher par label (j'ai pas trouvé de type bien défini pour les smartphones sur wikidata)
+            ?phone rdfs:label ?label.
+            FILTER(regex(?label, ".*${nomTel}.*", "i")).
+            OPTIONAL { ?phone wdt:P18 ?image. } # Image associée au téléphone
         }
+        LIMIT 1
     `;
-    const url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
+    
+    const url = "https://query.wikidata.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
 
     $.ajax({
-    url: url,
-    method: "GET",
-    dataType: "json",
+        url: url,
+        method: "GET",
+        dataType: "json",
     })
-    .done(data => {
-    // Process the results
-    const bindings = data.results.bindings;
-    console.log(bindings);
-    const results = bindings.map((binding) => binding.abstract.value);
-
-    // Display results
-    //$("ul#res").text("<li>" + results.join("</li><li>") + "</li>");
+    .done((data) => {
+        const result = data.results.bindings[0];
+        const imageUrl = result.image.value;
+        console.log(imageUrl)
+        $('#imageTel').attr('src', imageUrl); 
+    
     })
-    .fail(function (error) {
-    alert(
-    "La requête s'est terminée en échec. Infos : " + JSON.stringify(error)
-    );
-    })
-    .always(function () {});
-        
+    .fail((error) => {
+        alert("La requête a échoué. Infos : " + JSON.stringify(error));
     });
+}
+*/
 
 
+function getDetailsTelephone(nomTel){
 
+    const query = 
+    `
+        PREFIX dbr: <http://dbpedia.org/resource/>
+        PREFIX dbo: <http://dbpedia.org/ontology/>
+        PREFIX dbp: <http://dbpedia.org/property/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        SELECT ?label ?brand ?releaseDate ?cpu ?gpu ?image
+        WHERE {
+            ?tel a dbo:Device; 
+                rdfs:label ?label;  
+                dbp:type ?type.
+            FILTER(?label = ${nomTel}) .
+            FILTER (lang(?label) = "en") .
+            {
+                FILTER (regex(?type, ".*PHONE.*", "i")) 
+            }
+            UNION
+            {
+                FILTER (regex(?type, ".*PHABLET.*", "i")) 
+            }
+            OPTIONAL { ?tel dbo:releaseDate ?releaseDate. }
+            OPTIONAL { ?tel dbp:brand ?brand. }
+            OPTIONAL { ?tel dbp:cpu ?cpu. }
+            OPTIONAL { ?tel dbp:gpu ?gpu. }
+            OPTIONAL { ?tel foaf:depiction ?image. }
+        }
+    `;
 
+    const url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
+    $.ajax({
+        url: url,
+        method: "GET",
+        dataType: "json",
+    })
+        .done((data) => {
+            const item = data.results.bindings[0];
+                
+            for (const key in item) {
+                var value = item[key].value;
+                if (key!="image"){
+                    
+                    const lastSlashIndex = value.lastIndexOf("/");
+                    if(lastSlashIndex!=-1) {
+                        // Si c'est une URI on récupère que le texte après le dernier '/'
+                        value = value.substring(lastSlashIndex + 1);
+                    }
+
+                    let newRow = `
+                        <tr>
+                            <td>${key}</td>
+                            <td>${value}</td>
+                        </tr>
+                    `;
+
+                    $('#content-tab-prop').append(newRow);
+                } 
+                else{
+                    $('#imageTel').attr('src', value);
+                }
+            }
+        })
+        .fail((error) => {
+            alert("La requête a échoué. Infos : " + JSON.stringify(error));
+        });
+}
+
+$(document).ready(function () {
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const label = urlParams.get("label");
+
+    nomTel = `"${label}"@en`;
+
+    $('#page-title').html(`Détails du ${label}`);
+    
+    getDetailsTelephone(nomTel);
+
+});
