@@ -42,13 +42,13 @@ function getDetailsTelephone(nomTel){
         PREFIX dbo: <http://dbpedia.org/ontology/>
         PREFIX dbp: <http://dbpedia.org/property/>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        SELECT ?label ?brand ?releaseDate ?cpu ?gpu ?image
+        SELECT ?label ?brand ?releaseDate ?cpu ?gpu ?image ?pred
         WHERE {
             ?tel a dbo:Device; 
                 rdfs:label ?label;  
                 dbp:type ?type.
             FILTER(?label = ${nomTel}) .
-            FILTER (lang(?label) = "en") .
+            FILTER (lang(?label) = "en") . 
             {
                 FILTER (regex(?type, ".*PHONE.*", "i")) 
             }
@@ -61,6 +61,7 @@ function getDetailsTelephone(nomTel){
             OPTIONAL { ?tel dbp:cpu ?cpu. }
             OPTIONAL { ?tel dbp:gpu ?gpu. }
             OPTIONAL { ?tel foaf:depiction ?image. }
+            OPTIONAL { ?tel dbp:predecessor ?pred. }
         }
     `;
 
@@ -72,6 +73,7 @@ function getDetailsTelephone(nomTel){
     })
         .done((data) => {
             const item = data.results.bindings[0];
+            console.log(item);
                 
             for (const key in item) {
                 var value = item[key].value;
