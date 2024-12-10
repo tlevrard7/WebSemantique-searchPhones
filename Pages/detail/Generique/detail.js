@@ -1,45 +1,11 @@
-/*
-function getImageTelephone_WikiData(nomTel){
-
-    const query = 
-    `
-        SELECT ?phone ?image 
-        WHERE {
-            ?phone wdt:P306 ?os. # Permet de filtrer avant de rechercher par label (j'ai pas trouvé de type bien défini pour les smartphones sur wikidata)
-            ?phone rdfs:label ?label.
-            FILTER(regex(?label, ".*${nomTel}.*", "i")).
-            OPTIONAL { ?phone wdt:P18 ?image. } # Image associée au téléphone
-        }
-        LIMIT 1
-    `;
-    
-    const url = "https://query.wikidata.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
-
-    $.ajax({
-        url: url,
-        method: "GET",
-        dataType: "json",
-    })
-    .done((data) => {
-        const result = data.results.bindings[0];
-        const imageUrl = result.image.value;
-        console.log(imageUrl)
-        $('#imageTel').attr('src', imageUrl); 
-    
-    })
-    .fail((error) => {
-        alert("La requête a échoué. Infos : " + JSON.stringify(error));
-    });
-}
-*/
 
 const descVar = "Description";
 
 
 function getUrl(ressource){
-    ressource = "dbr:" + ressource;
+    ressource = "<" + ressource + ">";
     query = `
-                    SELECT DISTINCT ?Property ?Value
+                    SELECT DISTINCT ?Property (GROUP_CONCAT(?Value; SEPARATOR = ", ") AS ?Value)
                     WHERE {
                         {${ressource} ?Property ?Value .
                         FILTER (isIRI(?Value) || isBlank(?Value) || LANG(?Value) = "en" || LANG(?Value) = "").
@@ -56,6 +22,7 @@ function getUrl(ressource){
                         UNION
                         {OPTIONAL{${ressource} dbo:thumbnail ?Value .}}
                     }
+                    GROUP BY ?Property
                     LIMIT 60
                 `;
     url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
@@ -64,7 +31,7 @@ function getUrl(ressource){
 
 
 async function getType(ressource){
-    ressource = "dbr:" + ressource;
+    ressource = "<" + ressource + ">";
     query = `
         SELECT ?isWhat
         WHERE {
@@ -83,7 +50,7 @@ async function getType(ressource){
     url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
 
     try {
-        const response = await fetch(url, {
+        const response = await fetch(url, { sync: true }, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',  
@@ -91,17 +58,21 @@ async function getType(ressource){
         });
     
         if (!response.ok) {
+          console.log("not ok");
           throw new Error('Network response was not ok');
         }
     
         const data = await response.json();
 
+        console.log("bite2");
         return data.results && data.results.bindings.length 
           ? data.results.bindings[0].isWhat.value 
           : "Generique";
     
     } 
-    catch (error) {
+    catch (ressource) {
+        console.log(type);
+        console.log("bite");
         //console.error('Error:', error);
         return "Generique";
     }
@@ -148,13 +119,8 @@ function getDetails(ressource){
                                         <td>${value.split(',').map((sub)=>{
                                             // Si c'est une URI on récupère que le texte après le dernier '/'
                                             const lastSlashIndex = sub.lastIndexOf("/");
-                                            ressource = sub.substring(lastSlashIndex + 1);
-                                            getType(ressource)
-                                            .then((type) => {
-                                                console.log(sub, type);
-                                                return getUrifiedForm(ressource, type, ressource);
-                                            });  
-                                            
+                                            label = sub.substring(lastSlashIndex + 1);
+                                            return getUrifiedForm(ressource, "Generique", label);
                                         })} </td>
                                     </tr>
                                 `;
@@ -176,51 +142,23 @@ function getDetails(ressource){
                 }
 
             });
-            // for (const key in item) {
-            //     var value = item[key].value;
-            //     switch(key){
-            //         case `${imageVar}`:
-            //             $('#imageTel').attr('src', value);
-            //             break;
-            //         default:
-            //             const include = value.includes("http://dbpedia.org/");
-            //             console.log(value, include);
-            //             if(include) {
-            //                 // Si c'est une URI on récupère que le texte après le dernier '/'
-            //                 const lastSlashIndex = value.lastIndexOf("/");
-            //                 label = value.substring(lastSlashIndex + 1);
-            //                 var type = "Generique";
-            //                 if(type === predVar) type ="Tel";
-            //                 value = getUrifiedForm(value, key, label);
-            //             }
-
-            //             let newRow = `
-            //                 <tr>
-            //                     <td>${key}</td>
-            //                     <td>${value}</td>
-            //                 </tr>
-            //             `;
-
-            //             $('#content-tab-prop').append(newRow);
-            //     }
-            // }
         })
         .fail((error) => {
             alert("La requête a échoué. Infos : " + JSON.stringify(error));
         });
 }
 
-$(document).ready(function () {
+$(document).ready(async function () {
     
     const urlParams = new URLSearchParams(window.location.search);
     var label = urlParams.get("label");
     var ressource = urlParams.get("uri");
+    
 
     $('#page-title').html(`Détails du ${label}`);
-    console.log(ressource);
-    const lastSlashIndex = ressource.lastIndexOf("/");
-    ressource = ressource.substring(lastSlashIndex + 1);
-    console.log(ressource);
+    type = await getType(ressource);
+    if(type !== "Generique") window.location.href = `../${type}/detail.html?uri=${ressource}&label=${label}`;
+    
     getDetails(ressource);
 
 });

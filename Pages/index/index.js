@@ -53,7 +53,7 @@ function search(){
         // Display results
         if (bindings.length) {
           $("ul#res").html(bindings.map((b) => 
-            `<li> <a href="../detail/Tel/detail.html?uri=${encodeURIComponent(b.tel.value.substring(b.tel.value.lastIndexOf("/") + 1))}&label=${encodeURIComponent(b.label.value)}"> ${b.label.value} </a> </li>`
+            `<li> <a href="../detail/Generique/detail.html?uri=${encodeURIComponent(b.tel.value)}&label=${encodeURIComponent(b.label.value)}"> ${b.label.value} </a> </li>`
           ));
         } 
         else 
