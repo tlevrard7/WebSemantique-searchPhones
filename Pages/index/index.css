@@ -1,17 +1,166 @@
-/* * {
-    border: 1px dotted magenta;
-} */
+/* Réinitialisation de base */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
 
+/* En-tête stylisé */
 header {
     text-align: center;
-    background-color: grey;
+    background-color: #0056b3; /* Bleu foncé */
+    color: #ffffff;
+    padding: 20px 0;
+    font-size: 24px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Titre principal */
+header h1 {
+    margin: 0;
+    font-size: 36px;
+}
+
+/* Zone de recherche */
 .searchArea {
-    background-color: 'red';
+    background-color: #e6f0ff; /* Bleu très clair */
+    padding: 0.5px;
+    text-align: center;
+    margin: 20px auto;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 0; /* Désactive les coins arrondis */
+    overflow: hidden; /* Cache tout débordement des enfants */
+
+}
+
+/* Champ de recherche */
+.searchField input[type="search"] {
+    width: 70%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    outline: none;
+}
+
+/* Bouton de recherche */
+.searchField button {
+    padding: 10px 15px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.searchField button:hover {
+    background-color: #0056b3;
+}
+
+/* Résultats de la recherche */
+results {
+    display: block;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+#res {
+    list-style: none;
+    padding: 0;
+}
+
+#res li {
+    background-color: #ffffff;
+    margin-bottom: 10px;
+    padding: 15px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+#res li:hover {
+    transform: translateY(-3px);
+}
+
+/* Tableau de comparaison */
+compare_board {
+    display: block;
+    margin: 20px auto;
+    max-width: 90%;
+    overflow-x: auto;
+}
+
+#compare {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#compare th, #compare td {
+    padding: 12px;
+    border: 1px solid #dddddd;
     text-align: center;
 }
 
-.compare, .res{
-    width: 50%;
+#compare th {
+    background-color: #007bff;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+#compare tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Pied de page */
+footer {
+    text-align: center;
+    background-color: #0056b3;
+    color: #ffffff;
+    padding: 15px 0;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+/** Bouton de retour */
+.back-arrow {
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 18px;
+    color: #ffffff;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+/* Lorsque la souris survole le bouton */
+.back-arrow:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .searchField input[type="search"] {
+        width: 60%;
+    }
+
+    .searchField button {
+        width: 30%;
+    }
+
+    header h1 {
+        font-size: 28px;
+    }
 }
