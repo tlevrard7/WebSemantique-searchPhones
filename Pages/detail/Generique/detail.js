@@ -3,7 +3,7 @@ const descVar = "Description";
 
 
 function getUrl(ressource){
-    ressource = "<" + ressource + ">";
+    ressource = "<http://dbpedia.org/resource/" + ressource + ">";
     query = `
                     SELECT DISTINCT ?Property (GROUP_CONCAT(?Value; SEPARATOR = ", ") AS ?Value)
                     WHERE {
@@ -31,7 +31,7 @@ function getUrl(ressource){
 
 
 async function getType(ressource){
-    ressource = "<" + ressource + ">";
+    ressource = "<http://dbpedia.org/resource/" + ressource + ">";
     query = `
         SELECT ?isWhat
         WHERE {
@@ -80,7 +80,7 @@ async function getType(ressource){
 
 function getUrifiedForm(ressource, type, label){
 
-    return `<a href="../${type}/detail.html?uri=${ressource}&label=${label}"> ${label}</a>`;
+    return `<a href="../${type}/detail.html?uri=${encodeURIComponent(ressource)}&label=${label}"> ${label}</a>`;
 }
 
 
@@ -120,7 +120,7 @@ function getDetails(ressource){
                                             // Si c'est une URI on récupère que le texte après le dernier '/'
                                             const lastSlashIndex = sub.lastIndexOf("/");
                                             label = sub.substring(lastSlashIndex + 1);
-                                            return getUrifiedForm(ressource, "Generique", label);
+                                            return getUrifiedForm(label, "Generique", label);
                                         })} </td>
                                     </tr>
                                 `;
@@ -154,10 +154,10 @@ $(document).ready(async function () {
     var label = urlParams.get("label");
     var ressource = urlParams.get("uri");
     
-
+    console.log(ressource)
     $('#page-title').html(`Détails du ${label}`);
     type = await getType(ressource);
-    if(type !== "Generique") window.location.href = `../${type}/detail.html?uri=${ressource}&label=${label}`;
+    if(type !== "Generique") window.location.href = `../${type}/detail.html?uri=${encodeURIComponent(ressource)}&label=${encodeURIComponent(label)}`;
     
     getDetails(ressource);
 

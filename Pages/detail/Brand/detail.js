@@ -1,37 +1,4 @@
-/*
-function getImageTelephone_WikiData(nomTel){
 
-    const query = 
-    `
-        SELECT ?phone ?image 
-        WHERE {
-            ?phone wdt:P306 ?os. # Permet de filtrer avant de rechercher par label (j'ai pas trouvé de type bien défini pour les smartphones sur wikidata)
-            ?phone rdfs:label ?label.
-            FILTER(regex(?label, ".*${nomTel}.*", "i")).
-            OPTIONAL { ?phone wdt:P18 ?image. } # Image associée au téléphone
-        }
-        LIMIT 1
-    `;
-    
-    const url = "https://query.wikidata.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
-
-    $.ajax({
-        url: url,
-        method: "GET",
-        dataType: "json",
-    })
-    .done((data) => {
-        const result = data.results.bindings[0];
-        const imageUrl = result.image.value;
-        console.log(imageUrl)
-        $('#imageTel').attr('src', imageUrl); 
-    
-    })
-    .fail((error) => {
-        alert("La requête a échoué. Infos : " + JSON.stringify(error));
-    });
-}
-*/
 
 const absVar = "Abstract";
 const founderVar = "Founder";
@@ -41,7 +8,7 @@ const labelVar = "Label";
 const commentVar = "Comment";
 
 function getQuery(ressource){
-    ressource = "dbr:" + ressource;
+    ressource = "<http://dbpedia.org/resource/" + ressource + ">";
     return `
                     PREFIX dbr: <http://dbpedia.org/resource/>
                     PREFIX dbo: <http://dbpedia.org/ontology/>
@@ -60,7 +27,7 @@ function getQuery(ressource){
 
 function getUrifiedForm(ressource, type, label){
 
-    return `<a href="../${type}/detail.html?uri=${ressource}&label=${label}"> ${label} </a>`;
+    return `<a href="../${type}/detail.html?uri=${encodeURIComponent(ressource)}&label=${label}"> ${label} </a>`;
 }
 
 
@@ -91,9 +58,7 @@ function getDetails(ressource){
                             // Si c'est une URI on récupère que le texte après le dernier '/'
                             const lastSlashIndex = value.lastIndexOf("/");
                             label = value.substring(lastSlashIndex + 1);
-                            var type = "Generique";
-                            if(type === predVar) type ="Tel";
-                            value = getUrifiedForm(value, type, label);
+                            value = getUrifiedForm(value, "Generique", label);
                         }
 
                         let newRow = `
@@ -119,10 +84,6 @@ $(document).ready(function () {
     var ressource = urlParams.get("uri");
 
     $('#page-title').html(`Détails du ${label}`);
-    console.log(ressource);
-    const lastSlashIndex = ressource.lastIndexOf("/");
-    ressource = ressource.substring(lastSlashIndex + 1);
-    console.log(ressource);
     getDetails(ressource);
 
 });

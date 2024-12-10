@@ -1,36 +1,4 @@
-/*
-function getImageTelephone_WikiData(nomTel){
 
-    const query = 
-    `
-        SELECT ?phone ?image 
-        WHERE {
-            ?phone wdt:P306 ?os. # Permet de filtrer avant de rechercher par label (j'ai pas trouvé de type bien défini pour les smartphones sur wikidata)
-            ?phone rdfs:label ?label.
-            FILTER(regex(?label, ".*${nomTel}.*", "i")).
-            OPTIONAL { ?phone wdt:P18 ?image. } # Image associée au téléphone
-        }
-        LIMIT 1
-    `;
-    
-    const url = "https://query.wikidata.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
-
-    $.ajax({
-        url: url,
-        method: "GET",
-        dataType: "json",
-    })
-    .done((data) => {
-        const result = data.results.bindings[0];
-        const imageUrl = result.image.value;
-yy        $('#imageTel').attr('src', imageUrl); 
-    
-    })
-    .fail((error) => {
-        alert("La requête a échoué. Infos : " + JSON.stringify(error));
-    });
-}
-*/
 
 const predVar = "Predecessor";
 const imageVar = "Image";
@@ -41,7 +9,7 @@ const brandVar = "Brand";
 const labelVar = "Label";
 
 function getQuery(ressource){
-    ressource = "dbr:" + ressource;
+    ressource = "<http://dbpedia.org/resource/" + ressource + ">";
     return `
                     PREFIX dbr: <http://dbpedia.org/resource/>
                     PREFIX dbo: <http://dbpedia.org/ontology/>
@@ -59,9 +27,9 @@ function getQuery(ressource){
                 `;
 }
 
-function getUrifiedForm(ressource, type, label){
+function getUrifiedForm(ressource, label){
 
-    return `<a href="../${type}/detail.html?uri=${ressource}&label=${label}"> ${label} </a>`;
+    return `<a href="../Generique/detail.html?uri=${encodeURIComponent(ressource)}&label=${label}"> ${label} </a>`;
 }
 
 
@@ -90,9 +58,7 @@ function getDetails(ressource){
                             // Si c'est une URI on récupère que le texte après le dernier '/'
                             const lastSlashIndex = value.lastIndexOf("/");
                             label = value.substring(lastSlashIndex + 1);
-                            var type = "Generique";
-                            if(type === predVar) type ="Tel";
-                            value = getUrifiedForm(value, type, label);
+                            value = getUrifiedForm(label, label);
                         }
 
                         let newRow = `
