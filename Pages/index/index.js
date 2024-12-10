@@ -51,14 +51,13 @@ function search(){
       .done(data => {
         // Process the results
         const bindings = data.results.bindings;
-        const results = bindings.map(binding => binding.label.value);
 
-        console.log(results)
+        console.log(bindings[0].tel.value);
 
         // Display results
-        if (results.length) {
-          $("ul#res").html(results.map((r) => 
-              `<li> <a href="../detail/Tel/detail.html?label=${encodeURIComponent(r)}"> ${r} </a> </li>`
+        if (bindings.length) {
+          $("ul#res").html(bindings.map((b) => 
+              `<li> <a href="../detail/Tel/detail.html?uri=${encodeURIComponent(b.tel.value)}&label=${encodeURIComponent(b.label.value)}"> ${b.label.value} </a> </li>`
           ));
         } 
         else 

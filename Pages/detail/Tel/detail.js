@@ -41,7 +41,8 @@ const releaseDateVar = "ReleaseDate";
 const brandVar = "Brand";
 const labelVar = "Label";
 
-function getQuery(label){
+function getQuery(ressource){
+    ressource = "dbr:" + ressource;
     return `
                     PREFIX dbr: <http://dbpedia.org/resource/>
                     PREFIX dbo: <http://dbpedia.org/ontology/>
@@ -49,37 +50,25 @@ function getQuery(label){
                     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
                     SELECT ?${labelVar} ?${brandVar} ?${releaseDateVar} ?${cpuVar} ?${gpuVar} ?${imageVar} ?${predVar}
                     WHERE {
-                        ?tel a dbo:Device; 
-                            rdfs:label ?${labelVar};  
-                            dbp:type ?type.
-                        FILTER(?${labelVar} = ${label}) .
-                        FILTER (lang(?${labelVar}) = "en") . 
-                        {
-                            FILTER (regex(?type, ".*PHONE.*", "i")) 
-                        }
-                        UNION
-                        {
-                            FILTER (regex(?type, ".*PHABLET.*", "i")) 
-                        }
-                        OPTIONAL { ?tel dbo:releaseDate ?${releaseDateVar}. }
-                        OPTIONAL { ?tel dbp:brand ?${brandVar}. }
-                        OPTIONAL { ?tel dbp:cpu ?${cpuVar}. }
-                        OPTIONAL { ?tel dbp:gpu ?${gpuVar}. }
-                        OPTIONAL { ?tel foaf:depiction ?${imageVar}. }
-                        OPTIONAL { ?tel dbp:predecessor ?${predVar}. }
+                        OPTIONAL { ${ressource} dbo:releaseDate ?${releaseDateVar}. }
+                        OPTIONAL { ${ressource} dbp:brand ?${brandVar}. }
+                        OPTIONAL { ${ressource} dbp:cpu ?${cpuVar}. }
+                        OPTIONAL { ${ressource} dbp:gpu ?${gpuVar}. }
+                        OPTIONAL { ${ressource} foaf:depiction ?${imageVar}. }
+                        OPTIONAL { ${ressource} dbp:predecessor ?${predVar}. }
                     }
                 `;
 }
 
-function getUrifiedForm(label, type){
+function getUrifiedForm(ressource, type, label){
 
-    return `<a href="../${type}/detail.html?label=${label}"> ${label} </a>`;
+    return `<a href="../${type}/detail.html?uri=${ressource}&label=${label}"> ${label} </a>`;
 }
 
 
-function getDetails(label){
+function getDetails(ressource){
     
-    const query = getQuery(label);
+    const query = getQuery(ressource);
     
     const url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
     $.ajax({
@@ -103,10 +92,10 @@ function getDetails(label){
                         if(include) {
                             // Si c'est une URI on récupère que le texte après le dernier '/'
                             const lastSlashIndex = value.lastIndexOf("/");
-                            value = value.substring(lastSlashIndex + 1);
-                            const type = key;
-                            if(type === "Predecessor") type ="Tel";
-                            value = getUrifiedForm(value, key);
+                            label = value.substring(lastSlashIndex + 1);
+                            var type = key;
+                            if(type === predVar) type ="Tel";
+                            value = getUrifiedForm(value, key, label);
                         }
 
                         let newRow = `
@@ -128,10 +117,14 @@ function getDetails(label){
 $(document).ready(function () {
     
     const urlParams = new URLSearchParams(window.location.search);
-    const label = urlParams.get("label");
+    var label = urlParams.get("label");
+    var ressource = urlParams.get("uri");
 
     $('#page-title').html(`Détails du ${label}`);
-    
-    getDetails(label);
+    console.log(ressource);
+    const lastSlashIndex = ressource.lastIndexOf("/");
+    ressource = ressource.substring(lastSlashIndex + 1);
+    console.log(ressource);
+    getDetails(ressource);
 
 });
