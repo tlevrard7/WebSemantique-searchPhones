@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    console.log("done");
     var searchBar = document.getElementById("searchBar"); 
     var searchBtn = document.getElementById("searchBtn"); 
 
@@ -21,7 +20,6 @@ $(document).ready(function() {
 
 
 function search(){
-    console.log("clicked");
     var searchBar = document.getElementById("searchBar"); 
     var searchTxt = searchBar.value;
     const query = `
@@ -52,12 +50,10 @@ function search(){
         // Process the results
         const bindings = data.results.bindings;
 
-        console.log(bindings[0].tel.value);
-
         // Display results
         if (bindings.length) {
           $("ul#res").html(bindings.map((b) => 
-              `<li> <a href="../detail/Tel/detail.html?uri=${encodeURIComponent(b.tel.value)}&label=${encodeURIComponent(b.label.value)}"> ${b.label.value} </a> </li>`
+            `<li> <a href="../detail/Tel/detail.html?uri=${encodeURIComponent(b.tel.value.substring(b.tel.value.lastIndexOf("/") + 1))}&label=${encodeURIComponent(b.label.value)}"> ${b.label.value} </a> </li>`
           ));
         } 
         else 
