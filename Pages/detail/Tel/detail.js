@@ -36,28 +36,24 @@ function getImageTelephone_WikiData(nomTel){
 const predVar = "Predecessor";
 const imageVar = "Image";
 const gpuVar = "GPU";
-const predVar = "Predecessor";
-const predVar = "Predecessor";
-const predVar = "Predecessor";
+const cpuVar = "CPU";
+const releaseDateVar = "ReleaseDate";
+const brandVar = "Brand";
+const labelVar = "Label";
 
-function getQuery(id, type){
-    var query = ``
-    
-    switch(type){
-        case "tel":
-            const nomTel = `"${id}"@en`;
-            query = `
+function getQuery(label){
+    return `
                     PREFIX dbr: <http://dbpedia.org/resource/>
                     PREFIX dbo: <http://dbpedia.org/ontology/>
                     PREFIX dbp: <http://dbpedia.org/property/>
                     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                    SELECT ?label ?brand ?releaseDate ?cpu ?${gpuVar} ?${imageVar} ?${predVar}
+                    SELECT ?${labelVar} ?${brandVar} ?${releaseDateVar} ?${cpuVar} ?${gpuVar} ?${imageVar} ?${predVar}
                     WHERE {
                         ?tel a dbo:Device; 
-                            rdfs:label ?label;  
+                            rdfs:label ?${labelVar};  
                             dbp:type ?type.
-                        FILTER(?label = ${nomTel}) .
-                        FILTER (lang(?label) = "en") . 
+                        FILTER(?${labelVar} = ${label}) .
+                        FILTER (lang(?${labelVar}) = "en") . 
                         {
                             FILTER (regex(?type, ".*PHONE.*", "i")) 
                         }
@@ -65,29 +61,25 @@ function getQuery(id, type){
                         {
                             FILTER (regex(?type, ".*PHABLET.*", "i")) 
                         }
-                        OPTIONAL { ?tel dbo:releaseDate ?releaseDate. }
-                        OPTIONAL { ?tel dbp:brand ?brand. }
-                        OPTIONAL { ?tel dbp:cpu ?cpu. }
-                        OPTIONAL { ?tel dbp:gpu ?gpu. }
+                        OPTIONAL { ?tel dbo:releaseDate ?${releaseDateVar}. }
+                        OPTIONAL { ?tel dbp:brand ?${brandVar}. }
+                        OPTIONAL { ?tel dbp:cpu ?${cpuVar}. }
+                        OPTIONAL { ?tel dbp:gpu ?${gpuVar}. }
                         OPTIONAL { ?tel foaf:depiction ?${imageVar}. }
                         OPTIONAL { ?tel dbp:predecessor ?${predVar}. }
                     }
                 `;
-            break;
-        case "brand":
-            break;
-    }
-    return query;
 }
 
-function getUrifiedForm(id, type){
-    return `<a href="../detail/detail.html?id=${id}&type=${type}"> ${id} </a>`;
+function getUrifiedForm(label, type){
+
+    return `<a href="../${type}/detail.html?label=${label}"> ${label} </a>`;
 }
 
 
-function getDetails(id, type){
+function getDetails(label){
     
-    const query = getQuery(id, type);
+    const query = getQuery(label);
     
     const url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
     $.ajax({
@@ -113,7 +105,7 @@ function getDetails(id, type){
                             const lastSlashIndex = value.lastIndexOf("/");
                             value = value.substring(lastSlashIndex + 1);
                             const type = key;
-                            if(type === "Predecessor")
+                            if(type === "Predecessor") type ="Tel";
                             value = getUrifiedForm(value, key);
                         }
 
@@ -136,11 +128,10 @@ function getDetails(id, type){
 $(document).ready(function () {
     
     const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get("id");
-    const type = urlParams.get("type");
+    const label = urlParams.get("label");
 
-    $('#page-title').html(`Détails du ${id}`);
+    $('#page-title').html(`Détails du ${label}`);
     
-    getDetails(id, type);
+    getDetails(label);
 
 });

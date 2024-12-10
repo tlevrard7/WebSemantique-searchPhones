@@ -58,7 +58,7 @@ function search(){
         // Display results
         if (results.length) {
           $("ul#res").html(results.map((r) => 
-              `<li> <a href="../detail/detail.html?id=${encodeURIComponent(r)}&type=tel"> ${r} </a> </li>`
+              `<li> <a href="../detail/Tel/detail.html?label=${encodeURIComponent(r)}"> ${r} </a> </li>`
           ));
         } 
         else 
