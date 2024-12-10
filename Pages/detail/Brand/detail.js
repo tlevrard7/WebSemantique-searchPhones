@@ -33,29 +33,27 @@ function getImageTelephone_WikiData(nomTel){
 }
 */
 
-const predVar = "Predecessor";
-const imageVar = "Image";
-const gpuVar = "GPU";
-const cpuVar = "CPU";
-const releaseDateVar = "ReleaseDate";
-const brandVar = "Brand";
+const absVar = "Abstract";
+const founderVar = "Founder";
+const countryVar = "Country";
+const thumbnailVar = "Thumbnail";
 const labelVar = "Label";
+const commentVar = "Comment";
 
 function getQuery(ressource){
     ressource = "dbr:" + ressource;
     return `
                     PREFIX dbr: <http://dbpedia.org/resource/>
                     PREFIX dbo: <http://dbpedia.org/ontology/>
-                    PREFIX dbp: <http://dbpedia.org/property/>
                     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                    SELECT ?${labelVar} ?${brandVar} ?${releaseDateVar} ?${cpuVar} ?${gpuVar} ?${imageVar} ?${predVar}
+                    SELECT ?${labelVar} ?${absVar} ?${founderVar} ?${countryVar} ?${thumbnailVar} ?${commentVar}
                     WHERE {
-                        OPTIONAL { ${ressource} dbo:releaseDate ?${releaseDateVar}. }
-                        OPTIONAL { ${ressource} dbp:brand ?${brandVar}. }
-                        OPTIONAL { ${ressource} dbp:cpu ?${cpuVar}. }
-                        OPTIONAL { ${ressource} dbp:gpu ?${gpuVar}. }
-                        OPTIONAL { ${ressource} foaf:depiction ?${imageVar}. }
-                        OPTIONAL { ${ressource} dbp:predecessor ?${predVar}. }
+                        OPTIONAL { ${ressource} rdfs:label ?${labelVar}. }
+                        OPTIONAL { ${ressource} dbo:abstract ?${absVar}. }
+                        OPTIONAL { ${ressource} dbo:foundedBy ?${founderVar}. }
+                        OPTIONAL { ${ressource} dbo:locationCountry ?${countryVar}. }
+                        OPTIONAL { ${ressource} dbo:thumbnail ?${thumbnailVar}. }
+                        OPTIONAL { ${ressource} rdfs:comment ?${commentVar}. }
                     }
                 `;
 }
@@ -83,8 +81,8 @@ function getDetails(ressource){
             for (const key in item) {
                 var value = item[key].value;
                 switch(key){
-                    case `${imageVar}`:
-                        $('#imageTel').attr('src', value);
+                    case `${thumbnailVar}`:
+                        $('#imageBrand').attr('src', value);
                         break;
                     default:
                         const include = value.includes("http://dbpedia.org/");
