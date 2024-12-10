@@ -210,7 +210,8 @@ function displayCategoryResults(category, results) {
         const html = value.split(' | ').filter(i => i !== "").map(item => {
           // Pour les URLs dbpedia.org/resource, extraire uniquement le dernier segment
           if (item.startsWith('http://dbpedia.org/resource/')) {
-            return `<a href="${item}">${item.split('/').pop()}</a>`;
+            ressource = item.substring(item.lastIndexOf("/") + 1);
+            return `<a href="../Generique/detail.html?uri=${ressource}&label=${ressource}">${item.split('/').pop()}</a>`;
           }
           return item;
         }).join(', ');
@@ -267,7 +268,7 @@ $(document).ready(function () {
   var ressource = urlParams.get("uri");
   var label = urlParams.get("label");
 
-  $('#page-title').html(`Détails du ${label}`);
+  $('#page-title').html(`${label}`);
 
   // Appel pour récupérer l'image depuis Wikipédia
   fetchWikipediaImage(label);

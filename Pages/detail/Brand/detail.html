@@ -3,31 +3,27 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Detail de la Marque">
-        <meta name="author" content="LEVRARD, LARRAZ MARTIN, MARTIN, JEANNE">
-        <title>Detail de la Marque</title>
-        <link rel="stylesheet" href="../detail.css"> 
+        <meta name="description" content="Détail Marque">
+        <meta name="author" content="LEVRARD, LARRAZ MARTIN, MARTIN, JEANNE, ELGHISSASSI">
+        <title>Détail du téléphone</title>
+        <link rel="stylesheet" href="../detail.css">
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="detail.js"> </script>
+        <script src="../../utils.js"></script>
+        <script src="detail.js"></script>
     </head>
     <body>
         <header>
-            <h1 id="page-title" >Détail de la Marque ....</h1>
+            <a href="../../index/index.html" class="back-arrow" title="Retour à l'accueil">← Retour à l'accueil</a>
+            <h1 id="page-title">Détails</h1>
         </header>
-        
-        <main class="grid-container">
-            <img id="imageTel" src="" alt="Téléphone">
+    
+        <main>
+            <center><img id="image" src="" alt="non trouvée">
             <table class="styled-table">
-                <thead>
-                    <tr>
-                        <th>Propriété</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody id="content-tab-prop">
-                    
-                </tbody>
+                <th colspan="2" class="main-category">Informations Générales</th>
+                <tbody id="content-tab-prop"></tbody>
             </table>
+            </center>
         </main>
     </body>
 </html>

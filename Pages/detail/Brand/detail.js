@@ -7,12 +7,9 @@ const thumbnailVar = "Thumbnail";
 const labelVar = "Label";
 const commentVar = "Comment";
 
-function getQuery(ressource){
+function getUrl(ressource){
     ressource = "<http://dbpedia.org/resource/" + ressource + ">";
-    return `
-                    PREFIX dbr: <http://dbpedia.org/resource/>
-                    PREFIX dbo: <http://dbpedia.org/ontology/>
-                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    query = `
                     SELECT ?${labelVar} ?${absVar} ?${founderVar} ?${countryVar} ?${thumbnailVar} ?${commentVar}
                     WHERE {
                         OPTIONAL { ${ressource} rdfs:label ?${labelVar}. }
@@ -23,6 +20,8 @@ function getQuery(ressource){
                         OPTIONAL { ${ressource} rdfs:comment ?${commentVar}. }
                     }
                 `;
+    const url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
+    return url;
 }
 
 function getUrifiedForm(ressource, type, label){
@@ -33,9 +32,9 @@ function getUrifiedForm(ressource, type, label){
 
 function getDetails(ressource){
     
-    const query = getQuery(ressource);
+    const url = getUrl(ressource);
     
-    const url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
+    
     $.ajax({
         url: url,
         method: "GET",
@@ -83,7 +82,7 @@ $(document).ready(function () {
     var label = urlParams.get("label");
     var ressource = urlParams.get("uri");
 
-    $('#page-title').html(`Détails du ${label}`);
+    $('#page-title').html(`${label}`);
     getDetails(ressource);
 
 });

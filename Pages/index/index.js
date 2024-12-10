@@ -75,7 +75,7 @@ function search() {
               // Construire l'affichage avec ou sans thumbnail
               return `
                   <li>
-                      <a href="../detail/Tel/detail.html?uri=${telUri}&label=${encodeURIComponent(label)}">
+                      <a href="../detail/Generique/detail.html?uri=${telUri}&label=${encodeURIComponent(label)}">
                           ${thumbnail ? `<img src="${thumbnail}" alt="${label}" style="max-width: 100px; max-height: 100px; margin-right: 10px; vertical-align: middle;"/>` : ''}
                           ${label}
                       </a>

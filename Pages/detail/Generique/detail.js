@@ -155,7 +155,7 @@ $(document).ready(async function () {
     var ressource = urlParams.get("uri");
     
     console.log(ressource)
-    $('#page-title').html(`Détails du ${label}`);
+    $('#page-title').html(`${label}`);
     type = await getType(ressource);
     if(type !== "Generique") window.location.href = `../${type}/detail.html?uri=${encodeURIComponent(ressource)}&label=${encodeURIComponent(label)}`;
     
