@@ -1,0 +1,11 @@
+http://dbpedia.org/property/name
+http://dbpedia.org/property/caption
+http://dbpedia.org/property/website
+http://dbpedia.org/property/codename
+http://dbpedia.org/property/modelnumber
+http://dbpedia.org/ontology/manufacturer
+http://dbpedia.org/ontology/operatingSystem
+http://www.w3.org/2000/01/rdf-schema#seeAlso
+http://dbpedia.org/property/serieslabel
+http://dbpedia.org/property/other
+http://dbpedia.org/property/related
