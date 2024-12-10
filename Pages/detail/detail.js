@@ -33,6 +33,13 @@ function getImageTelephone_WikiData(nomTel){
 }
 */
 
+const predVar = "Predecessor";
+const imageVar = "Image";
+const gpuVar = "GPU";
+const predVar = "Predecessor";
+const predVar = "Predecessor";
+const predVar = "Predecessor";
+
 function getQuery(id, type){
     var query = ``
     
@@ -44,7 +51,7 @@ function getQuery(id, type){
                     PREFIX dbo: <http://dbpedia.org/ontology/>
                     PREFIX dbp: <http://dbpedia.org/property/>
                     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                    SELECT ?label ?brand ?releaseDate ?cpu ?gpu ?image ?pred
+                    SELECT ?label ?brand ?releaseDate ?cpu ?${gpuVar} ?${imageVar} ?${predVar}
                     WHERE {
                         ?tel a dbo:Device; 
                             rdfs:label ?label;  
@@ -62,12 +69,19 @@ function getQuery(id, type){
                         OPTIONAL { ?tel dbp:brand ?brand. }
                         OPTIONAL { ?tel dbp:cpu ?cpu. }
                         OPTIONAL { ?tel dbp:gpu ?gpu. }
-                        OPTIONAL { ?tel foaf:depiction ?image. }
-                        OPTIONAL { ?tel dbp:predecessor ?pred. }
+                        OPTIONAL { ?tel foaf:depiction ?${imageVar}. }
+                        OPTIONAL { ?tel dbp:predecessor ?${predVar}. }
                     }
                 `;
+            break;
+        case "brand":
+            break;
     }
     return query;
+}
+
+function getUrifiedForm(id, type){
+    return `<a href="../detail/detail.html?id=${id}&type=${type}"> ${id} </a>`;
 }
 
 
@@ -87,27 +101,30 @@ function getDetails(id, type){
                 
             for (const key in item) {
                 var value = item[key].value;
-                if (key!="image"){
-                    
-                    const include = value.includes("http://dbpedia.org/");
-                    console.log(value, include);
-                    if(include) {
-                        // Si c'est une URI on récupère que le texte après le dernier '/'
-                        const lastSlashIndex = value.lastIndexOf("/");
-                        value = value.substring(lastSlashIndex + 1);
-                    }
+                switch(key){
+                    case `${imageVar}`:
+                        $('#imageTel').attr('src', value);
+                        break;
+                    default:
+                        const include = value.includes("http://dbpedia.org/");
+                        console.log(value, include);
+                        if(include) {
+                            // Si c'est une URI on récupère que le texte après le dernier '/'
+                            const lastSlashIndex = value.lastIndexOf("/");
+                            value = value.substring(lastSlashIndex + 1);
+                            const type = key;
+                            if(type === "Predecessor")
+                            value = getUrifiedForm(value, key);
+                        }
 
-                    let newRow = `
-                        <tr>
-                            <td>${key}</td>
-                            <td>${value}</td>
-                        </tr>
-                    `;
+                        let newRow = `
+                            <tr>
+                                <td>${key}</td>
+                                <td>${value}</td>
+                            </tr>
+                        `;
 
-                    $('#content-tab-prop').append(newRow);
-                } 
-                else{
-                    $('#imageTel').attr('src', value);
+                        $('#content-tab-prop').append(newRow);
                 }
             }
         })
