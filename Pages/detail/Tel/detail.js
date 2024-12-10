@@ -23,8 +23,7 @@ function getImageTelephone_WikiData(nomTel){
     .done((data) => {
         const result = data.results.bindings[0];
         const imageUrl = result.image.value;
-        console.log(imageUrl)
-        $('#imageTel').attr('src', imageUrl); 
+yy        $('#imageTel').attr('src', imageUrl); 
     
     })
     .fail((error) => {
@@ -78,7 +77,6 @@ function getDetails(ressource){
     })
         .done((data) => {
             const item = data.results.bindings[0];
-            console.log(data);
                 
             for (const key in item) {
                 var value = item[key].value;
@@ -88,7 +86,6 @@ function getDetails(ressource){
                         break;
                     default:
                         const include = value.includes("http://dbpedia.org/");
-                        console.log(value, include);
                         if(include) {
                             // Si c'est une URI on récupère que le texte après le dernier '/'
                             const lastSlashIndex = value.lastIndexOf("/");
@@ -121,10 +118,6 @@ $(document).ready(function () {
     var ressource = urlParams.get("uri");
 
     $('#page-title').html(`Détails du ${label}`);
-    console.log(ressource);
-    const lastSlashIndex = ressource.lastIndexOf("/");
-    ressource = ressource.substring(lastSlashIndex + 1);
-    console.log(ressource);
     getDetails(ressource);
 
 });
