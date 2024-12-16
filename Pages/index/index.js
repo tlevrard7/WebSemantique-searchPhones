@@ -13,6 +13,12 @@ $(document).ready(function() {
   if (searchBar.value.length) searchBtn.click();
 });
 
+// Comparaison
+
+function addToCompare(predicate){
+
+}
+
 ///Recherche-----------------------------------------------------
 
 function search() {
@@ -79,6 +85,7 @@ function search() {
                           ${thumbnail ? `<img src="${thumbnail}" alt="${label}" style="max-width: 100px; max-height: 100px; margin-right: 10px; vertical-align: middle;"/>` : ''}
                           ${label}
                       </a>
+                      <button id="phoneComapreBtn" onclick="addToCompare(${telUri})">+</button>
                   </li>
               `;
           }).join(''));
