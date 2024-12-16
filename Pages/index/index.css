@@ -91,14 +91,14 @@ results {
     transform: translateY(-3px);
 }
 
-#phoneComapreBtn{
+.phoneCompareBtn{
     background-color: greenyellow;
     font-size: 10px;
     text-align: center;
     width: 30px;
     height: 30px;
 }
-#phoneComapreBtn:hover{
+.phoneCompareBtn:hover{
     background-color: green;
     font-size: 10px;
     text-align: center;
@@ -111,14 +111,13 @@ compare_board {
     font-size: 14px;
     /* margin: 20px auto; */
     left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 90%;
-    max-height: 25%;
+    transform: translate(-50%, 0);
+    max-height: 30%;
+    width: 100%;
     z-index: 1000; /* Ensures it stays above other content */
     overflow-x: auto;
     overflow-y: auto; /* Makes content vertically scrollable if it overflows */
     overflow-x: auto; /* Enables horizontal scrolling if needed */
-    /*display: none;  Initially hidden */
 }
 
 .hidden {
@@ -130,6 +129,83 @@ compare_board {
 }
 
 #compare {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    color: #333; /* Text color */
+}
+
+/* Header Styling */
+#compare thead {
+    background-color: #0073e6; /* Blue background */
+    color: white;
+    font-size: 1.1em;
+    text-transform: uppercase;
+}
+
+#compare th, #compare td {
+    padding: 10px 13px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+#compare thead th {
+    padding: 0; /* Remove padding from the header row cells */
+}
+
+
+#compare tbody tr:nth-child(even) {
+    background-color: #ebebeb;
+}
+
+#compare tbody tr:hover {
+    background-color: #e6f7ff;
+    cursor: pointer;
+}
+
+.phone-image {
+    max-width: 30px;
+    max-height: 30px;
+}
+
+.phoneCompareRemoveBtn{
+    background-color: rgb(255, 68, 47);
+    font-size: 10px;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+}
+.phoneCompareRemoveBtn:hover{
+    background-color: rgb(128, 0, 0);
+    font-size: 10px;
+    text-align: center;
+}
+
+/* Hyperlink styling */
+.phone-link {
+    color: #021629;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.phone-link:hover {
+    text-decoration: underline;
+    color: #1e5995;
+}
+
+/* First column (Labels) */
+#compare th[scope="row"] {
+    background-color: #cce4ff;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    padding: 0, 0;
+}
+
+/* #compare {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
@@ -153,7 +229,7 @@ compare_board {
 
 #compare tr:nth-child(even) {
     background-color: #f2f2f2;
-}
+} */
 
 /* Pied de page */
 footer {

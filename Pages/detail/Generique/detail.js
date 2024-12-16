@@ -7,7 +7,7 @@ function getUrl(ressource){
     query = `
                     SELECT DISTINCT ?Property (GROUP_CONCAT(?Value; SEPARATOR = ", ") AS ?Value)
                     WHERE {
-                        {${ressource} ?Property ?Value .
+                        ${ressource} ?Property ?Value .
                         FILTER (isIRI(?Value) || isBlank(?Value) || LANG(?Value) = "en" || LANG(?Value) = "").
                         FILTER (!regex(?Property, ".*type.*","i")) .
                         FILTER (!regex(?Property, ".*differentFrom.*","i")) .
@@ -18,9 +18,7 @@ function getUrl(ressource){
                         FILTER (!regex(?Property, ".*sid.*","i")) .
                         FILTER (!regex(?Property, ".*soc.*","i")) .
                         FILTER (!regex(?Property, ".*input.*","i")) .
-                        }
-                        UNION
-                        {OPTIONAL{${ressource} dbo:thumbnail ?Value .}}
+                        OPTIONAL{${ressource} dbo:thumbnail ?Value .}
                     }
                     GROUP BY ?Property
                     LIMIT 60
