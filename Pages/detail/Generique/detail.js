@@ -56,21 +56,21 @@ async function getType(ressource){
         });
     
         if (!response.ok) {
-          console.log("not ok");
+          
           throw new Error('Network response was not ok');
         }
     
         const data = await response.json();
 
-        console.log("bite2");
+        
         return data.results && data.results.bindings.length 
           ? data.results.bindings[0].isWhat.value 
           : "Generique";
     
     } 
     catch (ressource) {
-        console.log(type);
-        console.log("bite");
+        
+        
         //console.error('Error:', error);
         return "Generique";
     }
@@ -110,7 +110,7 @@ function getDetails(ressource){
                         default:
                             const include = value.includes("http://dbpedia.org/");
                             if(include) {
-                                console.log(value);
+                                
                                 newRow = `
                                     <tr>
                                         <td>${prop}</td>
@@ -152,7 +152,7 @@ $(document).ready(async function () {
     var label = urlParams.get("label");
     var ressource = urlParams.get("uri");
     
-    console.log(ressource)
+    
     $('#page-title').html(`${label}`);
     type = await getType(ressource);
     if(type !== "Generique") window.location.href = `../${type}/detail.html?uri=${encodeURIComponent(ressource)}&label=${encodeURIComponent(label)}`;

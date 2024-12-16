@@ -10,7 +10,7 @@ const commentVar = "Comment";
 function getUrl(ressource){
     ressource = "<http://dbpedia.org/resource/" + ressource + ">";
     query = `
-                    SELECT ?${labelVar} ?${absVar} ?${founderVar} ?${countryVar} ?${thumbnailVar} ?${commentVar}
+                    SELECT DISTINCT ?${labelVar} ?${absVar} ?${founderVar} ?${countryVar} ?${thumbnailVar} ?${commentVar}
                     WHERE {
                         OPTIONAL { ${ressource} rdfs:label ?${labelVar}. }
                         OPTIONAL { ${ressource} dbo:abstract ?${absVar}. }
@@ -42,7 +42,7 @@ function getDetails(ressource){
     })
         .done((data) => {
             const item = data.results.bindings[0];
-            console.log(data);
+            
                 
             for (const key in item) {
                 var value = item[key].value;
@@ -52,7 +52,7 @@ function getDetails(ressource){
                         break;
                     default:
                         const include = value.includes("http://dbpedia.org/");
-                        console.log(value, include);
+                        
                         if(include) {
                             // Si c'est une URI on récupère que le texte après le dernier '/'
                             const lastSlashIndex = value.lastIndexOf("/");

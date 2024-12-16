@@ -149,13 +149,13 @@ function fetchDetailsByCategory(ressource, category) {
     dataType: "json",
   })
     .done((data) => {
-      console.log(`Résultats pour ${category}:`, data);
+      
       const results = data.results.bindings;
       displayCategoryResults(category, results);
     })
     .fail((error) => {
       console.error(`Erreur pour la catégorie ${category} :`, error);
-      console.log("Détails de l'erreur :", error.responseText);
+      
     });
     
 }
