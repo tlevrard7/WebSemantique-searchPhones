@@ -65,9 +65,10 @@ function getDetails(ressource) {
 
             for (const key in item) {
                 var value = item[key].value;
-                console.log(key)
                 switch (key) {
                     case `${thumbnailVar}`:
+                        console.log(key)
+                        console.log(value)
                         $('#imageBrand').attr('src', value);
                         break;
                     default:
