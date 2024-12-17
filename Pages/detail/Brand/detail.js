@@ -9,7 +9,7 @@ const commentVar = "Comment";
 
 function getUrl(ressource) {
     const langFilter = key => `FILTER(isIRI(?${key}) || isBlank(?${key}) || LANG(?${key}) = "en" || LANG(?${key}) = "")`
-    ressource = "dbr:" + ressource;
+    ressource = `<http://dbpedia.org/resource/${ressource}>`;
     query = `
         PREFIX dbr: <http://dbpedia.org/resource/>
         PREFIX dbo: <http://dbpedia.org/ontology/>
