@@ -135,8 +135,8 @@ function search() {
             {
                 ?tel a dbo:Device; 
                     rdfs:label ?label;  
-                    dbo:abstract ?abstract.
-                
+                    dbo:abstract ?abstract;
+                    dbp:cpu ?cpu.
                 FILTER (lang(?abstract) = "en").
                 FILTER (lang(?label) = "en").
                 
@@ -150,7 +150,6 @@ function search() {
                 ?tel dbp:type dbr:Smartphone;
                     rdfs:label ?label;
                     dbo:abstract ?abstract.
-                
                 FILTER (lang(?abstract) = "en").
                 FILTER (lang(?label) = "en").
                 
