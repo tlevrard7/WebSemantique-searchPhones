@@ -134,32 +134,22 @@ function search() {
         SELECT DISTINCT ?tel ?label ?thumbnail WHERE {
             {
                 ?tel a dbo:Device; 
-                    rdfs:label ?label;  
                     dbo:abstract ?abstract;
                     dbp:cpu ?cpu.
-                FILTER (lang(?abstract) = "en").
-                FILTER (lang(?label) = "en").
-                
                 FILTER (regex(?abstract, "smartphone", "i")).
-                FILTER (regex(?label, ".*${searchTxt}.*", "i")).
-                
-                OPTIONAL { ?tel dbo:thumbnail ?thumbnail }
             }
             UNION
             {
                 ?tel dbp:type dbr:Smartphone;
-                    rdfs:label ?label;
-                    dbo:abstract ?abstract.
-                FILTER (lang(?abstract) = "en").
-                FILTER (lang(?label) = "en").
-                
-                FILTER (regex(?label, ".*${searchTxt}.*", "i")).
-                
-                OPTIONAL { ?tel dbo:thumbnail ?thumbnail }
+                dbo:abstract ?abstract.       
             }
+            ?tel rdfs:label ?label.
+            FILTER (lang(?abstract) = "en").
+            FILTER (lang(?label) = "en").   
+            FILTER (regex(?label, ".*${searchTxt}.*", "i")).
+            OPTIONAL { ?tel dbo:thumbnail ?thumbnail }
         }
     `;
-
 
   const url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
 
