@@ -8,18 +8,24 @@ const labelVar = "Label";
 const commentVar = "Comment";
 
 function getUrl(ressource){
-    ressource = "<http://dbpedia.org/resource/" + ressource + ">";
+    ressource = "dbr:" + ressource;
     query = `
-                    SELECT DISTINCT ?${labelVar} ?${absVar} ?${founderVar} ?${countryVar} ?${thumbnailVar} ?${commentVar}
-                    WHERE {
-                        OPTIONAL { ${ressource} rdfs:label ?${labelVar}. }
-                        OPTIONAL { ${ressource} dbo:abstract ?${absVar}. }
-                        OPTIONAL { ${ressource} dbo:foundedBy ?${founderVar}. }
-                        OPTIONAL { ${ressource} dbo:locationCountry ?${countryVar}. }
-                        OPTIONAL { ${ressource} dbo:thumbnail ?${thumbnailVar}. }
-                        OPTIONAL { ${ressource} rdfs:comment ?${commentVar}. }
-                    }
-                `;
+        PREFIX dbr: <http://dbpedia.org/resource/>
+        PREFIX dbo: <http://dbpedia.org/ontology/>
+        PREFIX dbp: <http://dbpedia.org/property/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+        SELECT DISTINCT ?${labelVar} ?${absVar} ?${founderVar} ?${countryVar} ?${thumbnailVar} ?${commentVar}
+        WHERE {
+            ${ressource} rdfs:label ?${labelVar}.
+            FILTER(lang(?${labelVar}) = "en") .
+            OPTIONAL { ${ressource} dbo:abstract ?${absVar}. }
+            OPTIONAL { ${ressource} dbo:foundedBy ?${founderVar}. }
+            OPTIONAL { ${ressource} dbo:locationCountry ?${countryVar}. }
+            OPTIONAL { ${ressource} dbo:thumbnail ?${thumbnailVar}. }
+            OPTIONAL { ${ressource} rdfs:comment ?${commentVar}. }
+        }
+    `;
     const url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
     return url;
 }
