@@ -7,7 +7,8 @@ const thumbnailVar = "Thumbnail";
 const labelVar = "Label";
 const commentVar = "Comment";
 
-function getUrl(ressource){
+function getUrl(ressource) {
+    const langFilter = key => `FILTER(isIRI(?${key}) || isBlank(?${key}) || LANG(?${key}) = "en" || LANG(?${key}) = "")`
     ressource = "dbr:" + ressource;
     query = `
         PREFIX dbr: <http://dbpedia.org/resource/>
@@ -18,29 +19,41 @@ function getUrl(ressource){
         SELECT DISTINCT ?${labelVar} ?${absVar} ?${founderVar} ?${countryVar} ?${thumbnailVar} ?${commentVar}
         WHERE {
             ${ressource} rdfs:label ?${labelVar}.
-            FILTER(lang(?${labelVar}) = "en") .
-            OPTIONAL { ${ressource} dbo:abstract ?${absVar}. }
-            OPTIONAL { ${ressource} dbo:foundedBy ?${founderVar}. }
-            OPTIONAL { ${ressource} dbo:locationCountry ?${countryVar}. }
-            OPTIONAL { ${ressource} dbo:thumbnail ?${thumbnailVar}. }
-            OPTIONAL { ${ressource} rdfs:comment ?${commentVar}. }
+            ${langFilter(labelVar)}.
+            OPTIONAL {
+                ${ressource} dbo:abstract ?${absVar}.
+                ${langFilter(absVar)}.
+            }
+            OPTIONAL {
+                ${ressource} dbo:foundedBy ?${founderVar}.
+                ${langFilter(founderVar)}.
+            }
+            OPTIONAL {
+                ${ressource} dbo:locationCountry ?${countryVar}.
+                ${langFilter(countryVar)}.
+                }
+                OPTIONAL { ${ressource} dbo:thumbnail ?${thumbnailVar}. }
+            OPTIONAL {
+                ${ressource} rdfs:comment ?${commentVar}.
+                ${langFilter(commentVar)}.
+            }
         }
     `;
     const url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
     return url;
 }
 
-function getUrifiedForm(ressource, type, label){
+function getUrifiedForm(ressource, type, label) {
 
     return `<a href="../${type}/detail.html?uri=${encodeURIComponent(ressource)}&label=${label}"> ${label} </a>`;
 }
 
 
-function getDetails(ressource){
-    
+function getDetails(ressource) {
+
     const url = getUrl(ressource);
-    
-    
+
+
     $.ajax({
         url: url,
         method: "GET",
@@ -48,18 +61,19 @@ function getDetails(ressource){
     })
         .done((data) => {
             const item = data.results.bindings[0];
-            
-                
+
+
             for (const key in item) {
                 var value = item[key].value;
-                switch(key){
+                console.log(key)
+                switch (key) {
                     case `${thumbnailVar}`:
                         $('#imageBrand').attr('src', value);
                         break;
                     default:
                         const include = value.includes("http://dbpedia.org/");
-                        
-                        if(include) {
+
+                        if (include) {
                             // Si c'est une URI on récupère que le texte après le dernier '/'
                             const lastSlashIndex = value.lastIndexOf("/");
                             label = value.substring(lastSlashIndex + 1);
@@ -83,7 +97,7 @@ function getDetails(ressource){
 }
 
 $(document).ready(function () {
-    
+
     const urlParams = new URLSearchParams(window.location.search);
     var label = urlParams.get("label");
     var ressource = urlParams.get("uri");
