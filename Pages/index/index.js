@@ -103,7 +103,7 @@ function addToCompare(id){
         }
          
         document.getElementById("phoneNameHeader").innerHTML += `<th scope="col">${image}<br/>
-                                                                                ${`<a class="phone-link" href="../detail/Generique/detail.html?uri=${encodeURIComponent(id)}&label=${result.name.value}"> ${result.name.value}</a>`} 
+                                                                                ${`<a class="phone-link" href="#" onclick='redirect("../detail", "${id}", "${result.name.value}")'>${result.name.value}</a>`} 
                                                                                 <button class="phoneCompareRemoveBtn" onclick="removeFromTable(event)">-</button></th>`;
         document.getElementById("spec1").innerHTML += `<th scope="col">${result.cpu.value == null ? "¯\_(ツ)_/¯": result.cpu.value}</th>`;
         document.getElementById("spec2").innerHTML += `<th scope="col">${result.gpu.value == null ? "¯\_(ツ)_/¯": result.gpu.value}</th>`;
@@ -168,12 +168,11 @@ function search() {
               const thumbnail = b.thumbnail ? b.thumbnail.value : ''; // Pas de placeholder si pas de thumbnail
               
               // Construire l'affichage avec ou sans thumbnail
+              content = `${thumbnail ? `<img src="${thumbnail}" alt="${label}" style="max-width: 100px; max-height: 100px; margin-right: 10px; vertical-align: middle;"/>` : ''}
+                         ${label}`
               return `
                   <li>
-                      <a href="../detail/Generique/detail.html?uri=${telUri}&label=${encodeURIComponent(label)}">
-                          ${thumbnail ? `<img src="${thumbnail}" alt="${label}" style="max-width: 100px; max-height: 100px; margin-right: 10px; vertical-align: middle;"/>` : ''}
-                          ${label}
-                      </a>
+                      ${getUrifiedForm("../detail", telUri, label, content)}
                       <button class="phoneCompareBtn" onclick="addToCompare('${telUri}')">+</button>
                   </li>
               `;

@@ -25,3 +25,61 @@ function escapeSparqlChars(ressource) {
     for (const c of '(){};.') ressource = ressource.replace(c, '\\' + c)
     return ressource
 }
+
+async function getType(ressource){
+    ressource = "<http://dbpedia.org/resource/" + ressource + ">";
+    query = `
+        SELECT ?isWhat
+        WHERE {
+            ${ressource} dbp:type ?type.
+            BIND(IF(
+                regex(?type, ".*PHONE.*", "i") || regex(?type, ".*PHABLET.*", "i"),
+                "Tel",
+                    IF(
+                    regex(?type, ".*COMPANY.*", "i"),
+                    "Brand",
+                    "Generique"
+                    )
+            ) AS ?isWhat)
+        }
+    `
+    url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
+
+    try {
+        const response = await fetch(url, { sync: true }, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',  
+          }
+        });
+    
+        if (!response.ok) {
+          
+          throw new Error('Network response was not ok');
+        }
+    
+        const data = await response.json();
+
+        
+        return data.results && data.results.bindings.length 
+          ? data.results.bindings[0].isWhat.value 
+          : "Generique";
+    
+    } 
+    catch (ressource) {
+        //console.error('Error:', error);
+        return "Generique";
+    }
+}
+
+async function redirect(base, ressource, label){
+    type = await getType(ressource);
+    if(type !== "Generique") window.location.href = `${base}/${type}/detail.html?uri=${encodeURIComponent(ressource)}&label=${encodeURIComponent(label)}`;
+    else window.location.href = `${base}/Generique/detail.html?uri=${encodeURIComponent(ressource)}&label=${encodeURIComponent(label)}`;
+}
+
+function getUrifiedForm(base, ressource, label, content){
+
+    //return `<a href="${base}/${type}/detail.html?uri=${encodeURIComponent(ressource)}&label=${label}"> ${label}</a>`;
+    return `<a href="#" onclick='redirect("${base}", "${ressource}", "${label}")'> ${content}</a>`;
+}

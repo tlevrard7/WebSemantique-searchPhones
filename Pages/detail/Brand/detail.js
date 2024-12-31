@@ -43,12 +43,6 @@ function getUrl(ressource) {
     return url;
 }
 
-function getUrifiedForm(ressource, type, label) {
-
-    return `<a href="../${type}/detail.html?uri=${encodeURIComponent(ressource)}&label=${label}"> ${label} </a>`;
-}
-
-
 function getDetails(ressource) {
 
     const url = getUrl(ressource);
@@ -78,7 +72,7 @@ function getDetails(ressource) {
                             // Si c'est une URI on récupère que le texte après le dernier '/'
                             const lastSlashIndex = value.lastIndexOf("/");
                             label = value.substring(lastSlashIndex + 1);
-                            value = getUrifiedForm(value, "Generique", label);
+                            value = getUrifiedForm("..", value, label, label);
                         }
 
                         let newRow = `

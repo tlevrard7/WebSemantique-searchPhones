@@ -5,19 +5,23 @@ const descVar = "Description";
 function getUrl(ressource){
     ressource = "<http://dbpedia.org/resource/" + ressource + ">";
     query = `
-                    SELECT DISTINCT ?Property (GROUP_CONCAT(?Value; SEPARATOR = ", ") AS ?Value)
+                    SELECT DISTINCT ?Property (GROUP_CONCAT(?Value; SEPARATOR = ",  ") AS ?Value)
                     WHERE {
                         ${ressource} ?Property ?Value .
                         FILTER (isIRI(?Value) || isBlank(?Value) || LANG(?Value) = "en" || LANG(?Value) = "").
                         FILTER (!regex(?Property, ".*type.*","i")) .
                         FILTER (!regex(?Property, ".*differentFrom.*","i")) .
                         FILTER (!regex(?Property, ".*depiction.*","i")) .
+                        FILTER (!regex(?Property, ".*logo.*","i")) .
                         FILTER (!regex(?Property, ".*subject.*","i")) .
                         FILTER (!regex(?Property, ".*SameAs.*","i")) .
-                        FILTER (!regex(?Property, ".*Wiki.*","i")) .
                         FILTER (!regex(?Property, ".*sid.*","i")) .
                         FILTER (!regex(?Property, ".*soc.*","i")) .
                         FILTER (!regex(?Property, ".*input.*","i")) .
+                        FILTER (!regex(?Property, ".*topic.*","i")) .
+                        FILTER (!regex(?Property, ".*UsesTemplate.*","i")) .
+                        FILTER (!regex(?Property, ".*Wiki.*Id","i")) .
+                        FILTER (!regex(?Property, ".*Wiki.*length","i")) .
                         OPTIONAL{${ressource} dbo:thumbnail ?Value .}
                     }
                     GROUP BY ?Property
@@ -25,60 +29,6 @@ function getUrl(ressource){
                 `;
     url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
     return url;
-}
-
-
-async function getType(ressource){
-    ressource = "<http://dbpedia.org/resource/" + ressource + ">";
-    query = `
-        SELECT ?isWhat
-        WHERE {
-            ${ressource} dbp:type ?type.
-            BIND(IF(
-                regex(?type, ".*PHONE.*", "i") || regex(?type, ".*PHABLET.*", "i"),
-                "Tel",
-                    IF(
-                    regex(?type, ".*COMPANY.*", "i"),
-                    "Brand",
-                    "Generique"
-                    )
-            ) AS ?isWhat)
-        }
-    `
-    url = "https://dbpedia.org/sparql" + "?query=" + encodeURIComponent(query) + "&format=json";
-
-    try {
-        const response = await fetch(url, { sync: true }, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',  
-          }
-        });
-    
-        if (!response.ok) {
-          
-          throw new Error('Network response was not ok');
-        }
-    
-        const data = await response.json();
-
-        
-        return data.results && data.results.bindings.length 
-          ? data.results.bindings[0].isWhat.value 
-          : "Generique";
-    
-    } 
-    catch (ressource) {
-        
-        
-        //console.error('Error:', error);
-        return "Generique";
-    }
-}
-
-function getUrifiedForm(ressource, type, label){
-
-    return `<a href="../${type}/detail.html?uri=${encodeURIComponent(ressource)}&label=${label}"> ${label}</a>`;
 }
 
 
@@ -105,10 +55,32 @@ function getDetails(ressource){
                     switch(prop){
                         case "Thumbnail":
                             $('#image').attr('src', value);
+                            break;
                         case "ImageCaption":
                             $('#image').attr('alt', value);
+                            break;
+                        case "WikiPageExternalLink":
+                        case "WikiPageWikiLink":
+                            newRow = `
+                                <tr>
+                                    <td>${prop}</td>
+                                    <td><ul>${value.split(',').map((sub)=>{
+                                        // Si c'est une URI on récupère que le texte après le dernier '/'
+                                        if(sub.includes("dbpedia.org/")){
+                                            label = sub.substring(sub.lastIndexOf("/") + 1);
+                                            return `<li>${getUrifiedForm("..", label, label, label)}</li>`;
+                                        }
+                                        else{
+                                            return `<li><a href='${sub}'>${sub}</a></li>`
+                                        }
+                                    }).join("")} 
+                                    </ul></td>
+                                </tr>
+                                `;
+                            $('#content-tab-links').append(newRow);
+                            break;
                         default:
-                            const include = value.includes("http://dbpedia.org/");
+                            const include = value.includes("http://");
                             if(include) {
                                 
                                 newRow = `
@@ -116,10 +88,16 @@ function getDetails(ressource){
                                         <td>${prop}</td>
                                         <td>${value.split(',').map((sub)=>{
                                             // Si c'est une URI on récupère que le texte après le dernier '/'
-                                            const lastSlashIndex = sub.lastIndexOf("/");
-                                            label = sub.substring(lastSlashIndex + 1);
-                                            return getUrifiedForm(label, "Generique", label);
-                                        })} </td>
+                                            if(sub.includes("dbpedia.org/")){
+                                                const lastSlashIndex = sub.lastIndexOf("/");
+                                                label = sub.substring(lastSlashIndex + 1);
+                                                return getUrifiedForm("..", label, label, label);
+                                            }
+                                            else{
+                                                return `<a href='${sub}'>${sub}</a>`
+                                            }
+                                        })} 
+                                        </td>
                                     </tr>
                                 `;
                             }
@@ -146,17 +124,13 @@ function getDetails(ressource){
         });
 }
 
-$(document).ready(async function () {
+$(document).ready(function () {
     
     const urlParams = new URLSearchParams(window.location.search);
     var label = urlParams.get("label");
     var ressource = urlParams.get("uri");
     
-    
     $('#page-title').html(`${label}`);
-    type = await getType(ressource);
-    if(type !== "Generique") window.location.href = `../${type}/detail.html?uri=${encodeURIComponent(ressource)}&label=${encodeURIComponent(label)}`;
-    
     getDetails(ressource);
 
 });
