@@ -28,7 +28,7 @@ h1 {
     border-collapse: collapse;
     margin: 25px 0;
     font-size: 16px;
-    min-width: 300px;
+    width: 100%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
@@ -44,6 +44,10 @@ h1 {
 .styled-table td {
     padding: 10px 15px;
     border: 1px solid #b3d7ff; /* Bordure bleu clair */
+}
+.styled-table-spec-name {
+    width: 1%;
+    white-space: nowrap;
 }
 
 /* Image du téléphone */

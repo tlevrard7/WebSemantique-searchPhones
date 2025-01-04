@@ -19,7 +19,7 @@ function getQueryByCategory(ressource, category) {
 
   const queries = {
     // -------------------- Informations Générales --------------------
-    "Informations Générales": `
+    "IG": `
       SELECT DISTINCT 
         (GROUP_CONCAT(DISTINCT ?name; SEPARATOR=" | ") AS ?name)
         (GROUP_CONCAT(DISTINCT ?abstract; SEPARATOR=" | ") AS ?abstract)
@@ -34,7 +34,7 @@ function getQueryByCategory(ressource, category) {
     `,
 
     // -------------------- Caractéristiques Techniques --------------------
-    "Système d'exploitation et SoC": `
+    "SOC": `
       SELECT DISTINCT 
         (GROUP_CONCAT(DISTINCT ?os; SEPARATOR=" | ") AS ?os)
         (GROUP_CONCAT(DISTINCT ?soc; SEPARATOR=" | ") AS ?soc)
@@ -44,7 +44,7 @@ function getQueryByCategory(ressource, category) {
       }
     `,
 
-    "CPU et GPU": `
+    "CPU": `
       SELECT DISTINCT 
         (GROUP_CONCAT(DISTINCT ?cpu; SEPARATOR=" | ") AS ?cpu)
         (GROUP_CONCAT(DISTINCT ?gpu; SEPARATOR=" | ") AS ?gpu)
@@ -54,7 +54,7 @@ function getQueryByCategory(ressource, category) {
       }
     `,
 
-    "Mémoire et Stockage": `
+    "RAM": `
       SELECT DISTINCT 
         (GROUP_CONCAT(DISTINCT ?memory; SEPARATOR=" | ") AS ?memory)
         (GROUP_CONCAT(DISTINCT ?storage; SEPARATOR=" | ") AS ?storage)
@@ -64,7 +64,7 @@ function getQueryByCategory(ressource, category) {
       }
     `,
 
-    "Écran et Caméras": `
+    "DIS": `
       SELECT DISTINCT 
         (GROUP_CONCAT(DISTINCT ?display; SEPARATOR=" | ") AS ?display)
         (GROUP_CONCAT(DISTINCT ?frontCamera; SEPARATOR=" | ") AS ?frontCamera)
@@ -76,7 +76,7 @@ function getQueryByCategory(ressource, category) {
       }
     `,
 
-    "Batterie et Chargement": `
+    "BAT": `
       SELECT DISTINCT 
         (GROUP_CONCAT(DISTINCT ?battery; SEPARATOR=" | ") AS ?battery)
         (GROUP_CONCAT(DISTINCT ?charging; SEPARATOR=" | ") AS ?charging)
@@ -86,7 +86,7 @@ function getQueryByCategory(ressource, category) {
       }
     `,
 
-    "Connectivité et Réseaux": `
+    "CON": `
       SELECT DISTINCT 
         (GROUP_CONCAT(DISTINCT ?connectivity; SEPARATOR=" | ") AS ?connectivity)
         (GROUP_CONCAT(DISTINCT ?networks; SEPARATOR=" | ") AS ?networks)
@@ -96,7 +96,7 @@ function getQueryByCategory(ressource, category) {
       }
     `,
 
-    "Étanchéité": `
+    "WET": `
       SELECT DISTINCT 
         (GROUP_CONCAT(DISTINCT ?waterResist; SEPARATOR=" | ") AS ?waterResist)
       WHERE {
@@ -105,7 +105,7 @@ function getQueryByCategory(ressource, category) {
     `,
 
     // -------------------- Informations Complémentaires --------------------
-    "Informations Complémentaires": `
+    "IC": `
       SELECT DISTINCT 
         (GROUP_CONCAT(DISTINCT ?memoryCard; SEPARATOR=" | ") AS ?memoryCard)
         (GROUP_CONCAT(DISTINCT ?input; SEPARATOR=" | ") AS ?input)
@@ -122,7 +122,7 @@ function getQueryByCategory(ressource, category) {
     `,
 
     // -------------------- Historique et Relations --------------------
-    "Historique et Relations": `
+    "HIS": `
       SELECT DISTINCT 
         (GROUP_CONCAT(DISTINCT ?released; SEPARATOR=" | ") AS ?released)
         (GROUP_CONCAT(DISTINCT ?available; SEPARATOR=" | ") AS ?available)
@@ -149,46 +149,17 @@ function fetchDetailsByCategory(ressource, category) {
     dataType: "json",
   })
     .done((data) => {
-      
       const results = data.results.bindings;
       displayCategoryResults(category, results);
     })
     .fail((error) => {
       console.error(`Erreur pour la catégorie ${category} :`, error);
-      
+
     });
-    
+
 }
 
 function displayCategoryResults(category, results) {
-  // Liste des sous-catégories des Caractéristiques Techniques
-  const technicalSubCategories = [
-    "Système d'exploitation et SoC",
-    "CPU et GPU",
-    "Mémoire et Stockage",
-    "Écran et Caméras",
-    "Batterie et Chargement",
-    "Connectivité et Réseaux",
-    "Étanchéité"
-  ];
-
-  // Liste des catégories principales
-  const mainCategories = [
-    "Informations Générales",
-    "Caractéristiques Techniques",
-    "Informations Complémentaires",
-    "Historique et Relations"
-  ];
-
-  // Appliquer le style main-category pour les catégories principales
-  if (mainCategories.includes(category)) {
-    $('#content-tab-prop').append(`<tr><th colspan="2" class="main-category">${category}</th></tr>`);
-  } 
-  // Appliquer le style sub-category pour les sous-catégories techniques
-  else if (technicalSubCategories.includes(category)) {
-    $('#content-tab-prop').append(`<tr><th colspan="2" class="sub-category">${category}</th></tr>`);
-  }
-
   // Afficher les résultats
   results.forEach(result => {
     for (const key in result) {
@@ -216,9 +187,9 @@ function displayCategoryResults(category, results) {
           return item;
         }).join(', ');
 
-        $('#content-tab-prop').append(`
+        document.getElementById(`content-sub-${category}`).insertAdjacentHTML("afterend", `
           <tr>
-            <td>${key}</td>
+            <td class="styled-table-spec-name">${key}</td>
             <td>${html}</td>
           </tr>
         `);
@@ -256,10 +227,8 @@ function fetchWikipediaImage(ressourceLabel) {
 }
 
 function displayWikipediaImage(imageUrl) {
-  $('#content-tab-prop').prepend(`
-    <tr>
-      <td colspan="2"><img src="${imageUrl}" alt="Image du téléphone" style="max-width:300px; max-height:300px; display:block; margin:auto;" /></td>
-    </tr>
+  $('#content').prepend(`
+    <img src="${imageUrl}" alt="Image du téléphone" style="max-width:300px; max-height:300px; display:block; margin:auto;" />
   `);
 }
 
@@ -272,34 +241,50 @@ $(document).ready(function () {
 
   // Appel pour récupérer l'image depuis Wikipédia
   fetchWikipediaImage(label);
-  
+
   // Fonction récursive pour garantir l'ordre d'affichage
   const categories = [
-  "Informations Générales",
-  "Caractéristiques Techniques",
-  "Système d'exploitation et SoC",
-  "CPU et GPU",
-  "Mémoire et Stockage",
-  "Écran et Caméras",
-  "Batterie et Chargement",
-  "Connectivité et Réseaux",
-  "Étanchéité",
-  "Informations Complémentaires",
-  "Historique et Relations"
-];
+    [
+      "IG", "Informations Générales"
+    ], [
+      "CT", "Caractéristiques Techniques", [
+        ["SOC", "Système d'exploitation et SoC"],
+        ["CPU", "CPU et GPU"],
+        ["RAM", "Mémoire et Stockage"],
+        ["DIS", "Écran et Caméras"],
+        ["BAT", "Batterie et Chargement"],
+        ["CON", "Connectivité et Réseaux"],
+        ["WET", "Étanchéité"],
+      ]
+    ], [
+      "IC", "Informations Complémentaires"
+    ], [
+      "HIS", "Historique et Relations"
+    ]
+  ];
 
-function fetchCategoriesSequentially(index) {
-  if (index < categories.length) {
-    if (categories[index] === "Caractéristiques Techniques") {
-      // Afficher le titre principal "Caractéristiques Techniques"
-      $('#content-tab-prop').append(`<tr><th colspan="2" class="main-category">Caractéristiques Techniques</th></tr>`);
-      fetchCategoriesSequentially(index + 1); // Passer à la sous-catégorie suivante sans délai
+
+  for (const category of categories) {
+    let mainId = `content-main-${category[0]}`
+    let subTables = ""
+    if (category.length === 3) {
+      for (sub of category[2]) {
+        subTables += `<tr id="content-sub-${sub[0]}"><th colspan="2" class="sub-category">${sub[1]}</th></tr>`
+        fetchDetailsByCategory(ressource, sub[0]);
+      }
     } else {
-      fetchDetailsByCategory(ressource, categories[index]);
-      setTimeout(() => fetchCategoriesSequentially(index + 1), 300); // Délai de 0.3 seconde pour éviter la saturation
+      subTables += `<tr id="content-sub-${category[0]}" style="display: none"><th colspan="2" class="sub-category">${category[1]}</th></tr>`
+      fetchDetailsByCategory(ressource, category[0]);
     }
+    $('#content').append(`
+      <table class="styled-table">
+        <thead>
+          <tr><th colspan="2" class="main-category">${category[1]}</th></tr>
+        </thead>
+        <tbody id="${mainId}">
+          ${subTables}
+        </tbody>
+      </table>
+    `);
   }
-}
-  // Lancement de l'affichage des catégories séquentiellement
-  fetchCategoriesSequentially(0);
 });
