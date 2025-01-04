@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="recherche de l'info sur des smarphones et compare ses specs.">
+    <meta name="author" content="LEVRARD, LARRAZ MARTIN, MARTIN, JEANNE">
+    <title>PhonarQL</title>
+    <link rel="stylesheet" href="index.css"> <!-- Lien vers votre fichier CSS -->
+    <link rel="icon" href="favicon.ico"> <!-- Favicon de votre site -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="../utils.js"> </script>
+    <script src="index.js"> </script>
+</head>
+<body>
+    <header>
+        <h1>Recherche de Smartphone PhonarQL</h1>
+    </header>
+    
+    <recherche class="searchArea">
+        <div class="searchField">
+            <input id="searchBar" type="search" name="searchBar" />
+            <button id="searchBtn" onclick="search()">🔍</button>
+        </div>
+    </recherche>
+
+    <results>
+        <ul id="res">
+        </ul>
+    </results>
+    
+    <compare_board id="compareBoard" class="hidden">
+         <table id="compare"> <!-- source: https://developer.mozilla.org/fr/docs/Web/HTML/Element/table -->
+          <thead>
+            <tr id="phoneNameHeader">
+              <!-- <th scope="col">phone name</th> -->
+              <th scope="col">-</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="spec1">
+              <th scope="row">CPU</th>
+              <!-- <td>phone spec</td> -->
+            </tr>
+            <tr id = "spec2">
+              <th scope="row">GPU</th>
+              <!-- <td>phone spec</td> -->
+            </tr>
+            <tr id = "spec3">
+              <th scope="row">Memory</th>
+              <!-- <td>phone spec</td> -->
+            </tr>
+            <tr id = "spec4">
+              <th scope="row">Storage</th>
+              <!-- <td>phone spec</td> -->
+            </tr>
+            <tr id = "spec5">
+              <th scope="row">Battery</th>
+              <!-- <td>phone spec</td> -->
+            </tr>
+            <tr id = "spec6">
+              <th scope="row">Display</th>
+              <!-- <td>phone spec</td> -->
+            </tr>
+            <tr id = "spec7">
+              <th scope="row">Rear Camera</th>
+              <!-- <td>phone spec</td> -->
+            </tr>
+
+          </tbody>
+        </table> 
+    </compare_board>
+    <footer>
+        <p>&copy; 2024 NotreSite. Tous droits réservés.</p>
+    </footer>
+    
+</body>
+</html>

@@ -1,0 +1,106 @@
+/* En-tête avec une nuance de bleu */
+header {
+    text-align: center;
+    background-color: #0056b3; /* Bleu foncé */
+    padding: 20px 0;
+}
+
+/* Titre principal de la page en blanc pour contraste */
+h1 {
+    text-align: center;
+    font-size: 50px;
+    color: #ffffff; /* Blanc pour le contraste */
+}
+
+/* Conteneur de grille */
+.grid-container {
+    display: grid;
+    grid-template-columns: 6fr 1fr 10fr;
+    grid-template-rows: 6fr 1fr 10fr;
+    gap: 10px;
+    align-items: center;
+    margin: 20px;
+}
+
+/* Table stylisée avec des nuances de bleu */
+.styled-table {
+    grid-column: 3 / 4;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 16px;
+    min-width: 300px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+/* En-tête du tableau avec un bleu plus vibrant */
+.styled-table thead tr {
+    background-color: #007BFF; /* Bleu vibrant */
+    color: #ffffff; /* Texte en blanc */
+    text-align: left;
+}
+
+/* Cellules du tableau avec bordures bleues */
+.styled-table th,
+.styled-table td {
+    padding: 10px 15px;
+    border: 1px solid #b3d7ff; /* Bordure bleu clair */
+}
+
+/* Image du téléphone */
+#imageTel {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    height: 540px;
+    width: 270px;
+    object-fit: contain;
+}
+
+
+
+/* Style pour le titre principal des catégories avec une nuance de bleu clair */
+.main-category {
+    background-color: #2489f6; /* Bleu très clair */
+    font-size: 24px;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 2px solid #7793b1; /* Bordure bleu clair */
+    color: #003366; /* Texte bleu foncé */
+}
+
+/* Style pour les sous-catégories avec une nuance de bleu plus soutenue */
+.sub-category {
+    background-color: #d1e6ff; /* Bleu clair */
+    font-size: 18px;
+    text-align: left;
+    font-weight: bold;
+    padding: 8px;
+    color: #003366; /* Texte bleu foncé */
+}
+
+/* Bouton de retour stylisé */
+.back-arrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 18px;
+    color: #ffffff;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: background-color 0.3s, transform 0.2s;
+    margin: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Effet au survol */
+.back-arrow:hover {
+    background-color: #0056b3;
+    transform: translateX(-5px); /* Déplacement subtil vers la gauche */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Effet d'appui */
+.back-arrow:active {
+    transform: translateX(-3px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}

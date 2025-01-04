@@ -1,0 +1,113 @@
+http://www.w3.org/2000/01/rdf-schema#comment
+http://xmlns.com/foaf/0.1/name
+http://xmlns.com/foaf/0.1/homepage
+http://xmlns.com/foaf/0.1/depiction
+http://purl.org/dc/terms/subject
+http://dbpedia.org/ontology/wikiPageWikiLink
+http://dbpedia.org/ontology/wikiPageExternalLink
+http://www.w3.org/2002/07/owl#sameAs
+http://dbpedia.org/property/sim
+http://dbpedia.org/property/sound
+http://dbpedia.org/property/waterResist
+http://dbpedia.org/ontology/thumbnail
+http://dbpedia.org/property/memoryCard
+http://dbpedia.org/property/logo
+http://dbpedia.org/property/manufacturer
+http://dbpedia.org/property/predecessor
+http://dbpedia.org/property/released
+http://dbpedia.org/ontology/abstract
+http://dbpedia.org/property/brand
+http://dbpedia.org/property/charging
+http://dbpedia.org/property/connectivity
+http://dbpedia.org/property/form
+http://dbpedia.org/property/input
+http://dbpedia.org/property/networks
+http://dbpedia.org/property/os
+http://www.w3.org/ns/prov#wasDerivedFrom
+http://dbpedia.org/ontology/releaseDate
+http://dbpedia.org/property/soc
+http://dbpedia.org/property/storage
+http://dbpedia.org/property/cpu
+http://dbpedia.org/property/memory
+http://dbpedia.org/property/available
+http://dbpedia.org/property/colors
+http://dbpedia.org/property/gpu
+http://dbpedia.org/property/successor
+http://dbpedia.org/property/battery
+http://dbpedia.org/property/display
+http://dbpedia.org/property/frontCamera
+http://dbpedia.org/property/rearCamera
+http://dbpedia.org/ontology/weight
+
+
+
+Informations Générales
+
+	1.	Nom et Description
+	•	http://xmlns.com/foaf/0.1/name
+	•	http://dbpedia.org/ontology/abstract
+	•	http://www.w3.org/2000/01/rdf-schema#comment
+	2.	Marque et Fabricant
+	•	http://dbpedia.org/property/brand
+	•	http://dbpedia.org/property/manufacturer
+	3.	Logo et Image
+	•	http://xmlns.com/foaf/0.1/depiction
+	•	http://dbpedia.org/property/logo
+	•	http://dbpedia.org/ontology/thumbnail
+
+Caractéristiques Techniques
+
+	1.	Système et Logiciel
+	•	http://dbpedia.org/property/os
+	•	http://dbpedia.org/property/soc
+	•	http://dbpedia.org/property/cpu
+	•	http://dbpedia.org/property/gpu
+	•	http://dbpedia.org/property/memory
+	•	http://dbpedia.org/property/storage
+	2.	Écran
+	•	http://dbpedia.org/property/display
+	3.	Caméras
+	•	http://dbpedia.org/property/frontCamera
+	•	http://dbpedia.org/property/rearCamera
+	4.	Batterie et Charge
+	•	http://dbpedia.org/property/battery
+	•	http://dbpedia.org/property/charging
+	5.	Connectivité et Réseau
+	•	http://dbpedia.org/property/connectivity
+	•	http://dbpedia.org/property/networks
+	6.	Résistance et Durabilité
+	•	http://dbpedia.org/property/waterResist
+
+Informations Complémentaires
+
+	1.	Mémoire Externe et Accessoires
+	•	http://dbpedia.org/property/memoryCard
+	•	http://dbpedia.org/property/input
+	2.	Design et Couleurs
+	•	http://dbpedia.org/property/form
+	•	http://dbpedia.org/property/colors
+	•	http://dbpedia.org/ontology/weight
+
+Historique et Relations
+
+	1.	Dates et Lancements
+	•	http://dbpedia.org/property/released
+	•	http://dbpedia.org/ontology/releaseDate
+	•	http://dbpedia.org/property/available
+	2.	Produits Liés
+	•	http://dbpedia.org/property/predecessor
+	•	http://dbpedia.org/property/successor
+
+Liens et Références
+
+	1.	Liens Internes et Externes
+	•	http://dbpedia.org/ontology/wikiPageWikiLink
+	•	http://dbpedia.org/ontology/wikiPageExternalLink
+	•	http://www.w3.org/2002/07/owl#sameAs
+	•	http://xmlns.com/foaf/0.1/homepage
+	2.	Provenance
+	•	http://www.w3.org/ns/prov#wasDerivedFrom
+	•	http://purl.org/dc/terms/subject
+	3.	Autres Attributs
+	•	http://dbpedia.org/property/sim
+	•	http://dbpedia.org/property/sound

@@ -1,0 +1,274 @@
+/* Réinitialisation de base */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* En-tête stylisé */
+header {
+    text-align: center;
+    background-color: #0056b3; /* Bleu foncé */
+    color: #ffffff;
+    padding: 20px 0;
+    font-size: 24px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Titre principal */
+header h1 {
+    margin: 0;
+    font-size: 36px;
+}
+
+/* Zone de recherche */
+.searchArea {
+    background-color: #e6f0ff; /* Bleu très clair */
+    padding: 0.5px;
+    text-align: center;
+    margin: 20px auto;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 0; /* Désactive les coins arrondis */
+    overflow: hidden; /* Cache tout débordement des enfants */
+
+}
+
+/* Champ de recherche */
+.searchField input[type="search"] {
+    width: 70%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    outline: none;
+}
+
+/* Bouton de recherche */
+.searchField button {
+    padding: 10px 15px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.searchField button:hover {
+    background-color: #0056b3;
+}
+
+/* Résultats de la recherche */
+results {
+    display: block;
+    margin: 20px auto;
+    max-width: 600px; 
+}
+
+#res {
+    list-style: none;
+    padding: 0;
+}
+
+#res li {
+    background-color: #ffffff;
+    margin-bottom: 10px;
+    padding: 15px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+}
+
+#res li:hover {
+    transform: translateY(-3px);
+}
+
+.phoneCompareBtn{
+    background-color: greenyellow;
+    font-size: 10px;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+}
+.phoneCompareBtn:hover{
+    background-color: green;
+    font-size: 10px;
+    text-align: center;
+}
+
+/* Tableau de comparaison */
+compare_board {
+    position: fixed;
+    bottom: 0;
+    font-size: 14px;
+    /* margin: 20px auto; */
+    left: 50%;
+    transform: translate(-50%, 0);
+    max-height: 30%;
+    width: 100%;
+    z-index: 1000; /* Ensures it stays above other content */
+    overflow-x: auto;
+    overflow-y: auto; /* Makes content vertically scrollable if it overflows */
+    overflow-x: auto; /* Enables horizontal scrolling if needed */
+}
+
+.hidden {
+    display: none;
+}
+
+.visible  {
+    display: block;
+}
+
+#compare {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    color: #333; /* Text color */
+}
+
+/* Header Styling */
+#compare thead {
+    background-color: #0073e6; /* Blue background */
+    color: white;
+    font-size: 1.1em;
+    text-transform: uppercase;
+}
+
+#compare th, #compare td {
+    padding: 10px 13px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+#compare thead th {
+    padding: 0; /* Remove padding from the header row cells */
+}
+
+
+#compare tbody tr:nth-child(even) {
+    background-color: #ebebeb;
+}
+
+#compare tbody tr:hover {
+    background-color: #e6f7ff;
+    cursor: pointer;
+}
+
+.phone-image {
+    max-width: 30px;
+    max-height: 30px;
+}
+
+.phoneCompareRemoveBtn{
+    background-color: rgb(255, 68, 47);
+    font-size: 10px;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+}
+.phoneCompareRemoveBtn:hover{
+    background-color: rgb(128, 0, 0);
+    font-size: 10px;
+    text-align: center;
+}
+
+/* Hyperlink styling */
+.phone-link {
+    color: #021629;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.phone-link:hover {
+    text-decoration: underline;
+    color: #1e5995;
+}
+
+/* First column (Labels) */
+#compare th[scope="row"] {
+    background-color: #cce4ff;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    padding: 0, 0;
+}
+
+/* #compare {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#compare th, #compare td {
+    padding: 12px;
+    border: 1px solid #dddddd;
+    text-align: center;
+}
+
+#compare th {
+    background-color: #007bff;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+#compare tr:nth-child(even) {
+    background-color: #f2f2f2;
+} */
+
+/* Pied de page */
+footer {
+    text-align: center;
+    background-color: #0056b3;
+    color: #ffffff;
+    padding: 15px 0;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+/** Bouton de retour */
+.back-arrow {
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 18px;
+    color: #ffffff;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+/* Lorsque la souris survole le bouton */
+.back-arrow:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .searchField input[type="search"] {
+        width: 60%;
+    }
+
+    .searchField button {
+        width: 30%;
+    }
+
+    header h1 {
+        font-size: 28px;
+    }
+}
